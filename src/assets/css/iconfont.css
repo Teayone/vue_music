@@ -1,0 +1,143 @@
+@font-face {
+  font-family: "iconfont";
+  /* Project id 2888079 */
+  src: url('//at.alicdn.com/t/font_2888079_44gi2jq339f.woff2?t=1638155046257') format('woff2'),
+    url('//at.alicdn.com/t/font_2888079_44gi2jq339f.woff?t=1638155046257') format('woff'),
+    url('//at.alicdn.com/t/font_2888079_44gi2jq339f.ttf?t=1638155046257') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bofangqi-bofang:before {
+  content: "\e6a4";
+}
+
+.icon-fanhui:before {
+  content: "\e603";
+}
+
+.icon-qianjin:before {
+  content: "\e605";
+}
+
+.icon-weibo:before {
+  content: "\e666";
+}
+
+.icon-chuangjian:before {
+  content: "\e612";
+}
+
+.icon-tianjia:before {
+  content: "\e604";
+}
+
+.icon-shipin:before {
+  content: "\eafb";
+}
+
+.icon-sousuo:before {
+  content: "\e651";
+}
+
+.icon-nan:before {
+  content: "\e8b3";
+}
+
+.icon-nv:before {
+  content: "\e8b4";
+}
+
+.icon-gerenzhuye:before {
+  content: "\e621";
+}
+
+.icon-dianzan:before {
+  content: "\ec7f";
+}
+
+.icon-pinglun:before {
+  content: "\e602";
+}
+
+.icon-bofangqi-bofangshu:before {
+  content: "\e66e";
+}
+
+.icon-del:before {
+  content: "\e617";
+}
+
+.icon-suiji:before {
+  content: "\e7b8";
+}
+
+.icon-xunhuan:before {
+  content: "\e6a9";
+}
+
+.icon-yinliang:before {
+  content: "\e87a";
+}
+
+.icon-danquxunhuan:before {
+  content: "\e66d";
+}
+
+.icon-wj-bflb:before {
+  content: "\e724";
+}
+
+.icon-24gl-volumeZero:before {
+  content: "\ea0d";
+}
+
+.icon-xunhuan1:before {
+  content: "\e610";
+}
+
+.icon-bofang1:before {
+  content: "\e624";
+}
+
+.icon-zanting:before {
+  content: "\e629";
+}
+
+.icon-icon-:before {
+  content: "\e648";
+}
+
+.icon-icon-1:before {
+  content: "\e649";
+}
+
+.icon-suoding:before {
+  content: "\e600";
+}
+
+.icon-jiesuo:before {
+  content: "\e601";
+}
+
+.icon-shoucang:before {
+  content: "\e632";
+}
+
+.icon-bofang:before {
+  content: "\e6a2";
+}
+
+.icon-erji:before {
+  content: "\e616";
+}
+
+.icon-yunhang:before {
+  content: "\ec61";
+}
