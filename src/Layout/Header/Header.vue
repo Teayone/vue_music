@@ -2,10 +2,7 @@
   <div id="header">
     <div class="wrap">
       <div class="location-btn">
-        <i
-          class="iconfont icon-fanhui"
-          :class="{ active: historyLength > 1 }"
-        ></i>
+        <i class="iconfont icon-fanhui"></i>
         <i class="iconfont icon-qianjin"></i>
       </div>
       <!-- 搜索框 -->
@@ -14,9 +11,16 @@
         <input type="text" placeholder="搜索" />
       </div>
       <!-- 登录&登陆成功后的头像 -->
-      <div class="login" @click="login">
-        <i class="avatar"></i>
-        <span class="nic-name">未登录</span>
+      <div class="login" @click="ShowloginBox">
+        <div class="avatar">
+          <img v-if="profile !== null" :src="profile.avatarUrl" alt="" />
+          <img v-else src="../../assets/img/login.jpg" alt="" />
+        </div>
+        <span class="nic-name">{{
+          profile ? profile.nickname : "未登录"
+        }}</span>
+
+        <button @click.stop="louginOut" v-if="profile">退出</button>
       </div>
     </div>
     <!-- 登录框 -->
@@ -30,38 +34,73 @@
         >
         <div class="input">
           <label for="username">
-            账号：<input type="tel" id="username" />
+            账号：<input type="tel" id="username" v-model="phone" />
           </label>
           <br />
           <label for="password">
-            密码：<input type="password" id="password" />
+            密码：<input type="password" id="password" v-model="password" />
           </label>
         </div>
-        <button>登录</button>
+        <button @click="login">登录</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { phoneLogin } from "../../network/login";
+import { getUserAdminDetail } from "../../network/user";
 export default {
   name: "Header",
   data() {
     return {
       showLoginBox: false,
+      phone: "",
+      password: "",
+      // 账号数据
+      profile: null,
     };
   },
-
-  methods: {
-    // 登录
-    login() {
-      this.showLoginBox = true;
-    },
+  created() {
+    let cookie = localStorage.getItem("userInfo");
+    if (cookie) {
+      this.getUserData();
+    } else {
+      this.profile = null;
+    }
   },
-  computed: {
-    // 记录栈里的历史记录多少个
-    historyLength() {
-      return window.history.length;
+  methods: {
+    // 登录框
+    ShowloginBox() {
+      if (this.profile) {
+        return;
+      } else {
+        this.showLoginBox = true;
+      }
+    },
+    login() {
+      phoneLogin(this.phone, this.password).then((v) => {
+        if (v.data.code === 200) {
+          this.profile = v.data.profile;
+          localStorage.setItem("userInfo", v.data.cookie);
+          this.showLoginBox = false;
+          this.$bus.$emit("reload");
+        } else {
+          alert("登陆失败，请重试");
+        }
+      });
+    },
+    // 退出登录
+    louginOut() {
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("user-detail");
+      this.profile = null;
+      this.$bus.$emit("reload");
+    },
+    // 如果已经登陆则刷新页面获取的用户数据
+    async getUserData() {
+      let { data: res } = await getUserAdminDetail();
+      this.profile = res.profile;
     },
   },
 };
@@ -143,15 +182,31 @@ export default {
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        // background: pink;
+        overflow: hidden;
         vertical-align: middle;
-        background: url("../../assets/img/login.jpg") no-repeat;
-        background-size: 100%;
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
       .nic-name {
         font-size: 12px;
         color: #fff9fb;
         margin-left: 5px;
+      }
+
+      button {
+        position: absolute;
+        width: 50px;
+        height: 30px;
+        font-size: 12px;
+        right: -70px;
+        top: 4px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 0, 0, 0.3);
+        background-color: rgba(0, 0, 0, 0.3);
+        color: rgba(255, 255, 0, 0.5);
+        cursor: pointer;
       }
     }
   }

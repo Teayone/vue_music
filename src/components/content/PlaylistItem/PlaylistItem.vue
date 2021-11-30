@@ -22,6 +22,7 @@ export default {
   methods: {
     // 歌单封面的播放按钮
     playSong() {
+      console.log(this.playCount);
       this.$emit("playSong");
     },
   },
@@ -30,14 +31,13 @@ export default {
 
 <style lang="less" scoped>
 #playlist-item {
-  width: 120px;
+  width: 250px;
   margin-top: 20px;
   margin-bottom: 10px;
-  margin-right: 15px;
   .img-box {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 250px;
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
@@ -51,7 +51,7 @@ export default {
       top: 5px;
       right: 5px;
       color: #e8f8f7;
-      z-index: 2;
+      z-index: -1;
       font-size: 12px;
       i {
         vertical-align: middle;
@@ -65,6 +65,7 @@ export default {
       position: absolute;
       width: 100%;
       height: 100%;
+      z-index: -2;
     }
     p {
       position: absolute;
@@ -74,7 +75,6 @@ export default {
       height: 30px;
       background: #fff;
       border-radius: 50%;
-      z-index: 2;
       text-align: center;
       line-height: 30px;
       transition: all 0.5s;

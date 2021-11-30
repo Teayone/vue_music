@@ -2,7 +2,7 @@
   <div id="main">
     <Aside />
     <!-- 路由 -->
-    <router-view></router-view>
+    <router-view :key="key" v-if="isRouterAlive"></router-view>
   </div>
 </template>
 
@@ -11,6 +11,29 @@ import Aside from "../Aside/Aside.vue";
 export default {
   name: "Main",
   components: { Aside },
+  mounted() {
+    this.$bus.$on("reload", () => {
+      this.reload();
+    });
+  },
+  data() {
+    return {
+      isRouterAlive: true,
+    };
+  },
+  methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(() => (this.isRouterAlive = true));
+    },
+  },
+  computed: {
+    key() {
+      return this.$route.name
+        ? this.$route.name + +newDate()
+        : this.$route + +new Date();
+    },
+  },
 };
 </script>
 

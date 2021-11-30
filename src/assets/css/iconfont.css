@@ -1,9 +1,9 @@
 @font-face {
   font-family: "iconfont";
   /* Project id 2888079 */
-  src: url('//at.alicdn.com/t/font_2888079_44gi2jq339f.woff2?t=1638155046257') format('woff2'),
-    url('//at.alicdn.com/t/font_2888079_44gi2jq339f.woff?t=1638155046257') format('woff'),
-    url('//at.alicdn.com/t/font_2888079_44gi2jq339f.ttf?t=1638155046257') format('truetype');
+  src: url('//at.alicdn.com/t/font_2888079_52dgy9s7uxu.woff2?t=1638269778989') format('woff2'),
+    url('//at.alicdn.com/t/font_2888079_52dgy9s7uxu.woff?t=1638269778989') format('woff'),
+    url('//at.alicdn.com/t/font_2888079_52dgy9s7uxu.ttf?t=1638269778989') format('truetype');
 }
 
 .iconfont {
@@ -12,6 +12,26 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-lianjie:before {
+  content: "\e606";
+}
+
+.icon-zanting1:before {
+  content: "\e65e";
+}
+
+.icon-shoucang1:before {
+  content: "\e639";
+}
+
+.icon-24gf-playlistMusic5:before {
+  content: "\ea87";
+}
+
+.icon-liebiaoxunhuan:before {
+  content: "\e6a3";
 }
 
 .icon-bofangqi-bofang:before {

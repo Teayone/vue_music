@@ -4,7 +4,7 @@
     <PlaylistItem
       v-for="item in list"
       :key="item.id"
-      :playCount="item.playCount"
+      :playCount="item.playCount || item.playcount"
       :describe="item.name"
       @playSong="playSong(item.id)"
     >
@@ -16,7 +16,11 @@
 <script>
 import List from "../List/List.vue";
 import PlaylistItem from "../../content/PlaylistItem/PlaylistItem.vue";
-import { getPersonalized, getWholeSongs } from "../../../network/api";
+import {
+  getPersonalized,
+  getWholeSongs,
+  getLoginPlayList,
+} from "../../../network/api";
 export default {
   name: "Songsheet",
   components: { List, PlaylistItem },
@@ -31,8 +35,14 @@ export default {
   },
   methods: {
     async getData() {
-      let { data: res } = await getPersonalized();
-      this.list = res.result.slice(0, 20);
+      let cookie = localStorage.getItem("userInfo");
+      if (cookie) {
+        let { data: ures } = await getLoginPlayList();
+        this.list = ures.recommend.slice(0, 10);
+      } else {
+        let { data: res } = await getPersonalized();
+        this.list = res.result.slice(0, 10);
+      }
     },
     // playSong 子组件的播放音乐按钮
     playSong(id) {

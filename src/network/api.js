@@ -60,3 +60,14 @@ export function getSongsUrl(id){
    }
 
 }
+// 获取登陆后的推荐歌单
+export function getLoginPlayList(){
+   let cookies = localStorage.getItem('userInfo')?localStorage.getItem('userInfo'):''
+   let encode = encodeURIComponent(cookies)
+   return request({
+      url:'/recommend/resource',
+      params:{
+         cookie:encode
+      }
+   })
+}
