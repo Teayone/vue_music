@@ -1,15 +1,17 @@
 <template>
   <div id="playlist-item">
     <!-- item歌单 -->
-    <div class="img-box">
+    <div class="img-box" @click.stop="toPlaylistDetail">
       <div>
         <i class="iconfont icon-bofangqi-bofang"></i>
         {{ playCount | formatPlayCount }}
       </div>
       <slot></slot>
-      <p @click="playSong"><i class="iconfont icon-bofangqi-bofang"></i></p>
+      <p @click.stop="playSong">
+        <i class="iconfont icon-bofangqi-bofang"></i>
+      </p>
     </div>
-    <div class="info-box">
+    <div class="info-box" @click.stop="toPlaylistDetail">
       <p>{{ describe }}</p>
     </div>
   </div>
@@ -24,6 +26,10 @@ export default {
     playSong() {
       console.log(this.playCount);
       this.$emit("playSong");
+    },
+    // 跳转到歌单详情页
+    toPlaylistDetail() {
+      this.$emit("jumpRouter");
     },
   },
 };

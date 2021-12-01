@@ -24,7 +24,7 @@
       </div>
     </div>
     <!-- 登录框 -->
-    <div class="login-box" v-show="showLoginBox">
+    <div class="login-box" v-if="showLoginBox">
       <!-- 遮罩层 -->
       <div class="bg"></div>
       <!-- 登录框 -->

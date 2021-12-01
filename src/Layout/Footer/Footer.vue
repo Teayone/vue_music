@@ -19,6 +19,5 @@ export default {
   // background: #f5f5f5;
   background: url("../../assets/img/bg1.jpg");
   background-size: 100% 100%;
-  border-top: 1px solid #f5f5f5;
 }
 </style>

@@ -27,6 +27,10 @@ const routes = [
   {
     path:'/newsongs',
     component:()=>import( /* webpackChunkName: "artist" */ '../pages/Newsong/Newsong.vue')
+  },
+  {
+    path:'/playlist-detail',
+    component:()=>import( /* webpackChunkName: "playlist-detail" */ '../pages/PlaylistDetail/PlaylistDetail.vue')
   }
 ]
 

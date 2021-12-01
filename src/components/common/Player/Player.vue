@@ -44,7 +44,7 @@
     </div>
     <!-- 歌曲时长 -->
     <div class="song-time">
-      <span>{{ curTime | formatTimer }}</span>
+      <span class="ctime">{{ curTime | formatTimer }}</span>
       <i>/</i>
       <span>{{ duration | formatTimer }}</span>
     </div>
@@ -66,7 +66,7 @@
             </div>
           </div>
         </div>
-        <i class="iconfont icon-yinliang"></i>
+        <i :class="volumeIcon"></i>
       </div>
       <!-- 播放模式 -->
       <div class="mode">
@@ -75,7 +75,11 @@
       <!-- 播放列表 -->
       <div class="songlist">
         <transition name="slist">
-          <Songlist v-show="showSongList" ref="Songlist" />
+          <Songlist
+            v-show="showSongList"
+            ref="Songlist"
+            @clearSonglist="clearSonglist"
+          />
         </transition>
 
         <i class="iconfont icon-24gf-playlistMusic5" @click="showList"></i>
@@ -116,6 +120,7 @@ export default {
       curTime: 0, // 当前播放进度的歌曲时长
       songDetail: null, // 歌曲的详细信息
       isUpdate: true, // 是否绑定事件，true为绑定
+      volumeIcon: "iconfont icon-yinliang", // 音量图标
       mode: "iconfont icon-liebiaoxunhuan", // 播放模式字体图标
       modeName: "循环",
       showSongList: false, // 是否显示播放列表
@@ -133,6 +138,7 @@ export default {
         this.audio.play(); // 播放歌曲
         this.Songlist.getData(); // 更新播放列表
         this.Songlist.updateSongDetail(); // 更新播放列表中正在演唱的歌曲
+        this.Songlist.setSongListSroll();
       });
     });
     setTimeout(() => {
@@ -215,14 +221,19 @@ export default {
     },
     // 控制播放暂停
     playBtnClick() {
-      if (this.url) {
-        if (this.flag) {
-          this.audio.pause();
+      let song = JSON.parse(localStorage.getItem("song"));
+      if (song) {
+        if (this.url) {
+          if (this.flag) {
+            this.audio.pause();
+          } else {
+            this.audio.play();
+          }
         } else {
-          this.audio.play();
+          this.$store.dispatch("SongUrl");
         }
       } else {
-        this.$store.dispatch("SongUrl");
+        return;
       }
     },
     // 当前歌曲播放进度的时间
@@ -238,41 +249,46 @@ export default {
     toggleSong(type) {
       let index = JSON.parse(localStorage.getItem("index"));
       let song = JSON.parse(localStorage.getItem("song"));
-      if (type === "prev") {
-        if (this.modeName === "循环") {
-          --index;
-          if (index < 0) {
-            index = song.length - 1;
+      if (song) {
+        if (type === "prev") {
+          if (this.modeName === "循环") {
+            --index;
+            if (index < 0) {
+              index = song.length - 1;
+            }
+          } else if (this.modeName === "随机") {
+            let i = Math.floor(Math.random() * song.length);
+            index = i;
+          } else if (this.modeName === "单曲循环") {
+            --index;
+            if (index < 0) {
+              index = song.length - 1;
+            }
           }
-        } else if (this.modeName === "随机") {
-          let i = Math.floor(Math.random() * song.length);
-          index = i;
-        } else if (this.modeName === "单曲循环") {
-          --index;
-          if (index < 0) {
-            index = song.length - 1;
+        } else {
+          if (this.modeName === "循环") {
+            ++index;
+            if (index >= song.length) {
+              index = 0;
+            }
+          } else if (this.modeName === "随机") {
+            let i = Math.floor(Math.random() * song.length);
+            index = i;
+          } else if (this.modeName === "单曲循环") {
+            ++index;
+            if (index >= song.length) {
+              index = 0;
+            }
           }
         }
+        localStorage.setItem("index", JSON.stringify(index));
+
+        this.$store.dispatch("SongUrl");
+        this.Songlist.updateSongDetail();
+        this.Songlist.setSongListSroll();
       } else {
-        if (this.modeName === "循环") {
-          ++index;
-          if (index >= song.length) {
-            index = 0;
-          }
-        } else if (this.modeName === "随机") {
-          console.log("我执行了，我是随机");
-          let i = Math.floor(Math.random() * song.length);
-          index = i;
-        } else if (this.modeName === "单曲循环") {
-          ++index;
-          if (index >= song.length) {
-            index = 0;
-          }
-        }
+        return;
       }
-      localStorage.setItem("index", JSON.stringify(index));
-      this.$store.dispatch("SongUrl");
-      this.Songlist.updateSongDetail();
     },
     // 上一首
     prevSong() {
@@ -304,6 +320,10 @@ export default {
         } else if (yuanTop >= _this.volumeBar.offsetHeight - 6) {
           yuanTop = _this.volumeBar.offsetHeight - 6;
         }
+        _this.volumeIcon =
+          yuanTop === -6
+            ? "iconfont icon-24gl-volumeZero"
+            : "iconfont icon-yinliang";
         yuan.style.top = yuanTop + "px";
         _this.Bar.style.height = yuanTop + 6 + "px";
         let v = ((yuanTop + 6) / _this.volumeBar.offsetHeight).toFixed(1);
@@ -359,6 +379,24 @@ export default {
       this.showSongList = !this.showSongList;
       // 调用子组件的方法
       this.Songlist.updateSongDetail();
+      this.Songlist.activeSongScroll();
+    },
+    // 清空播放列表
+    clearSonglist() {
+      localStorage.removeItem("song");
+      let HcProgress = document.querySelector(".progress>.hc-progress");
+      this.updateSongDetail();
+      this.Songlist.getData();
+      this.url = null;
+      if (this.flag) {
+        this.audio.pause();
+      }
+      setTimeout(() => {
+        this.CurProgress.style.width = 0 + "%";
+        HcProgress.style.width = 0 + "%";
+        this.duration = 0;
+        this.curTime = 0;
+      }, 100);
     },
   },
 };

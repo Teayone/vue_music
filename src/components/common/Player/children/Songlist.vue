@@ -1,17 +1,17 @@
 <template>
   <div id="songlist">
-    <div v-if="showList && song !== null">
+    <div v-if="song !== null">
       <h2>当前播放</h2>
       <div class="tt">
         <p class="num">总{{ song.length }}首</p>
         <p class="shoucang">
           <i class="iconfont icon-shoucang1"></i><span>收藏全部</span>
         </p>
-        <p class="clear">
+        <p class="clear" @click.stop="clearSongList">
           <i class="iconfont icon-del"></i><span>清空列表</span>
         </p>
       </div>
-      <ul class="list">
+      <ul class="list" id="ul-list">
         <li
           v-for="(item, index) in song"
           :key="item.id"
@@ -30,7 +30,11 @@
               <em>{{ i === item.ar.length - 1 ? "" : "/" }}</em>
             </span>
           </div>
-          <i class="iconfont icon-del shanchu" title="移除歌曲"></i>
+          <i
+            class="iconfont icon-del shanchu"
+            title="移除歌曲"
+            @click.stop="removeSong(item.id)"
+          ></i>
           <i class="iconfont icon-lianjie lianjie"></i>
           <span class="time">{{ (item.dt / 1000) | formatTimer }}</span>
         </li>
@@ -48,7 +52,6 @@ export default {
   name: "Songlist",
   data() {
     return {
-      showList: false, //是否显示播放列表
       song: null, //歌曲列表数据
       songDetail: null, // 当前正在播放的歌曲
     };
@@ -57,15 +60,16 @@ export default {
     this.getData();
     this.updateSongDetail();
   },
+  mounted() {
+    setTimeout(() => {}, 100);
+  },
   methods: {
     // 更新播放列表
     getData() {
       let song = JSON.parse(localStorage.getItem("song"));
       if (song) {
-        this.showList = true;
         this.song = song;
       } else {
-        this.showList = false;
         this.song = null;
       }
     },
@@ -86,6 +90,70 @@ export default {
       setTimeout(() => {
         this.updateSongDetail();
       }, 100);
+    },
+    // 清空播放列表
+    clearSongList() {
+      this.$emit("clearSonglist");
+    },
+    removeSong(id) {
+      let song = JSON.parse(localStorage.getItem("song"));
+      let index = JSON.parse(localStorage.getItem("index"));
+      let i = song.findIndex((item) => {
+        return item.id === id;
+      });
+      // 删除播放列表歌曲
+      song.splice(i, 1);
+      // 更新播放列表
+      this.song = song;
+      // 更新本地的播放列表
+      localStorage.setItem("song", JSON.stringify(song));
+      // 如果正在播放的歌曲的索引，大于被删除的歌曲的索引则index--防止样式位移
+      if (i < index) {
+        index--;
+        localStorage.setItem("index", JSON.stringify(index));
+      } else if (i === index) {
+        // 如果正在播放
+        if (this.$parent.flag) {
+          // 先减掉在下一首
+          index--;
+          localStorage.setItem("index", JSON.stringify(index));
+          this.$parent.nextSong();
+        } else {
+          // 反之更新父组件正在播放的歌曲的状态
+          this.$parent.updateSongDetail();
+        }
+      }
+      // 最终都会更新播放列表正在和演唱的歌曲样式
+      this.updateSongDetail();
+    },
+    // 将当前正在播放的歌曲显示在正中央(移动滚动条)
+    activeSongScroll() {
+      setTimeout(() => {
+        let Ulist = document.querySelector("#ul-list");
+        let Llist = document.querySelector("#ul-list>li.active");
+        let uh = Ulist.offsetHeight;
+        let lot = Llist.offsetTop;
+        if (lot >= uh) {
+          Ulist.scrollTop = lot;
+        } else {
+          Ulist.scrollTop = lot - uh / 2;
+        }
+      }, 200);
+    },
+    // 根据切换歌曲而移动滚动条
+    setSongListSroll() {
+      setTimeout(() => {
+        let Ulist = document.querySelector("#ul-list");
+        let Llist = document.querySelector("#ul-list>li.active");
+        let uh = Ulist.offsetHeight;
+        let us = Ulist.scrollTop;
+        let lot = Llist.offsetTop;
+        if (lot >= uh + us) {
+          Ulist.scrollTop = lot - uh + Llist.offsetHeight;
+        } else if (lot <= us - Llist.offsetHeight) {
+          Ulist.scrollTop = lot;
+        }
+      });
     },
   },
 };
@@ -140,6 +208,7 @@ export default {
     height: 400px;
     font-size: 12px;
     overflow: auto;
+    position: relative;
     li {
       position: relative;
       display: flex;
@@ -168,6 +237,7 @@ export default {
       }
       .song {
         flex: 1;
+        margin-right: 10px;
         margin-left: 10px;
         white-space: nowrap;
         overflow: hidden;

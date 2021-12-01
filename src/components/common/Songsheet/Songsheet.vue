@@ -7,6 +7,7 @@
       :playCount="item.playCount || item.playcount"
       :describe="item.name"
       @playSong="playSong(item.id)"
+      @jumpRouter="toPlaylistDetail(item.id)"
     >
       <img :src="item.picUrl" alt="" />
     </PlaylistItem>
@@ -53,6 +54,14 @@ export default {
         localStorage.setItem("index", JSON.stringify(0));
         // 通知Vuex发起请求获取某首音乐的URL
         this.$store.dispatch("SongUrl");
+      });
+    },
+    toPlaylistDetail(id) {
+      this.$router.push({
+        path: "playlist-detail",
+        query: {
+          id,
+        },
       });
     },
   },
