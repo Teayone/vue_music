@@ -5,8 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    flag:false, // 歌曲是否正在播放
+    CurTime:0
   },
   mutations: {
+    SETFLAG(state,bol){
+      state.flag = bol
+    },
+    SETCURTIME(state,time){
+      state.CurTime = time
+    }
   },
   actions: {
     SongUrl(){

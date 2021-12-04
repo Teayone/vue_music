@@ -24,7 +24,6 @@ export default {
   methods: {
     // 歌单封面的播放按钮
     playSong() {
-      console.log(this.playCount);
       this.$emit("playSong");
     },
     // 跳转到歌单详情页

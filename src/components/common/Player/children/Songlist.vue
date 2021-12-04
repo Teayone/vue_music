@@ -1,6 +1,7 @@
 <template>
   <div id="songlist">
     <div v-if="song !== null">
+      <img :src="songDetail.al.picUrl" alt="" class="bg" />
       <h2>当前播放</h2>
       <div class="tt">
         <p class="num">总{{ song.length }}首</p>
@@ -21,11 +22,7 @@
           <i class="iconfont icon-zanting1 icon"></i>
           <span class="song">{{ item.name }}</span>
           <div class="singer">
-            <span
-              class="singer"
-              v-for="(artist, i) in item.ar"
-              :key="artist.id"
-            >
+            <span class="singer" v-for="(artist, i) in item.ar" :key="i">
               {{ artist.name }}
               <em>{{ i === item.ar.length - 1 ? "" : "/" }}</em>
             </span>
@@ -48,21 +45,19 @@
 </template>
 
 <script>
+import { updateSongDetail } from "@/mixin/mixin";
 export default {
   name: "Songlist",
   data() {
     return {
       song: null, //歌曲列表数据
-      songDetail: null, // 当前正在播放的歌曲
     };
   },
+  mixins: [updateSongDetail],
   created() {
     this.getData();
-    this.updateSongDetail();
   },
-  mounted() {
-    setTimeout(() => {}, 100);
-  },
+
   methods: {
     // 更新播放列表
     getData() {
@@ -71,16 +66,6 @@ export default {
         this.song = song;
       } else {
         this.song = null;
-      }
-    },
-    // 更新具体演唱的歌曲
-    updateSongDetail() {
-      let index = JSON.parse(localStorage.getItem("index")),
-        song = JSON.parse(localStorage.getItem("song"));
-      if (song) {
-        this.songDetail = song[index];
-      } else {
-        this.songDetail = null;
       }
     },
     // 播放歌曲
@@ -134,7 +119,7 @@ export default {
         let uh = Ulist.offsetHeight;
         let lot = Llist.offsetTop;
         if (lot >= uh) {
-          Ulist.scrollTop = lot;
+          Ulist.scrollTop = lot - uh / 2;
         } else {
           Ulist.scrollTop = lot - uh / 2;
         }
@@ -163,22 +148,31 @@ export default {
 #songlist {
   position: absolute;
   top: -525px;
+  left: -200px;
   width: 500px;
   height: 500px;
-  background: #25b3c9;
+  background: #fff;
   overflow: hidden;
   z-index: 2;
   border: 1px solid #25b3c9;
+  img.bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    z-index: 2;
+  }
   h2 {
     font-size: 24px;
     font-weight: 900;
     padding: 20px 20px 0 20px;
   }
   .tt {
+    position: relative;
+    z-index: 3;
     display: flex;
     margin-top: 20px;
     padding: 0 20px 15px 20px;
-
     p {
       flex: 1;
       font-size: 12px;
@@ -189,7 +183,7 @@ export default {
       }
       &.shoucang {
         cursor: pointer;
-        margin-left: 200px;
+        margin-left: 230px;
         i {
           vertical-align: -1px;
           margin-right: 2px;
@@ -209,25 +203,25 @@ export default {
     font-size: 12px;
     overflow: auto;
     position: relative;
+    z-index: 3;
     li {
       position: relative;
       display: flex;
       align-items: center;
-      background: #55bed3;
       height: 40px;
       padding: 0 10px;
       cursor: pointer;
       border-top: 1px solid #356f86;
       color: #1a638d;
       &.active {
-        background: #4498b9;
+        background: rgba(0, 0, 0, 0.2);
         color: #2665da;
         .icon {
           visibility: visible;
         }
       }
       &:hover {
-        background: #4498b9;
+        background: rgba(0, 0, 0, 0.2);
         .shanchu {
           visibility: visible;
         }

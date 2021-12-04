@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { getBanner } from "../../../network/api";
+import { getBanner } from "@/network/api";
 export default {
   name: "Swiper",
   data() {

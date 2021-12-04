@@ -37,6 +37,14 @@ Vue.filter('formatTimer',function(value){
 
   }
 })
+Vue.filter('forMatDate',function(value){
+  let date = new Date(value)
+  let year = date.getFullYear()
+  let m = date.getMonth()+1
+  let d =  date.getDate()
+  return year + '-' + m + '-' + d
+
+})
 new Vue({
   router,
   store,

@@ -71,3 +71,123 @@ export function getLoginPlayList(){
       }
    })
 }
+// 获取歌曲详情(可获取歌单所有歌曲)
+export function getSongDetail(ids){
+   return request({
+      url:'/song/detail',
+      params:{
+         ids
+      }
+   })
+}
+// 歌单评论数据
+export function getPlayListComment(id,offset,before){
+   if(offset){
+      return request({
+         url:'/comment/playlist',
+         params:{
+            id,
+            offset:(offset-1)*20,
+         }
+      })
+   }else if(before){
+      return request({
+         url:'/comment/playlist',
+         params:{
+            id,
+            offset:(offset-1)*20,
+            before,
+       
+         }
+      })
+   }else{
+      return request({
+         url:'/comment/playlist',
+         params:{
+            id,
+         }
+      })
+   }
+
+}
+
+// 歌单收藏者
+export function getPlaylistSubscribers(id,offset){
+   let cookies = localStorage.getItem('userInfo')?localStorage.getItem('userInfo'):''
+   let encode = encodeURIComponent(cookies)
+   if(cookies){
+      if(offset){
+         return request({
+            url:'/playlist/subscribers',
+            params:{
+               id,
+               limit:32,
+               offset:(offset-1)*32,
+               cookie:encode
+            }
+         })
+      }else{
+         return request({
+            url:'/playlist/subscribers',
+            params:{
+               id,
+               limit:32,
+               cookie:encode
+            }
+         })
+      }
+   } else{
+      if(offset){
+         return request({
+            url:'/playlist/subscribers',
+            params:{
+               id,
+               offset:(offset-1)*32,
+            }
+         })
+      }else{
+         return request({
+            url:'/playlist/subscribers',
+            params:{
+               id,
+               limit:32
+            }
+         })
+      }
+   }
+
+}
+
+// 发送评论
+export function sendComment({t,type,id,content}){
+   let cookies = localStorage.getItem('userInfo')?localStorage.getItem('userInfo'):''
+   let encode = encodeURIComponent(cookies)
+   return request({
+      url:'/comment',
+      params:{
+         t,
+         type,
+         id,
+         content,
+         cookie:encode
+      }
+   })
+}  
+// 获取单独的歌曲详情
+export function getSongInfo(ids){
+   return request({
+      url:'/song/detail',
+      params:{
+         ids
+      }
+   })
+}
+// 获取歌词
+export function getLyric(id){
+   return request({
+      url:'/lyric',
+      params:{
+         id
+      }
+   })
+}

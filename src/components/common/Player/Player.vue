@@ -10,24 +10,41 @@
         <i class="iconfont icon-icon-"></i>
       </div>
     </div>
-    <!-- 歌曲封面 -->
-    <div class="cover">
-      <img
-        :src="
-          songDetail === null
-            ? 'https://s4.music.126.net/style/web2/img/default/default_album.jpg'
-            : songDetail.al.picUrl
-        "
-        alt=""
-      />
+    <div style="overflow: hidden; height: 100%">
+      <div class="c-b-box" :style="{ transform: `translateY(${ty}px)` }">
+        <div class="btns" @click="toSong" key="2">
+          <p><i class="iconfont icon-aixin"></i></p>
+          <p><i class="iconfont icon-shoucang1"></i></p>
+          <p><i class="iconfont icon-fenxiang"></i></p>
+          <div><i class="iconfont icon-xiajiantou"></i></div>
+        </div>
+        <!-- 歌曲封面 -->
+        <div class="cover" @click="toSong" key="1">
+          <!-- 遮罩 -->
+          <span class="cover-bg" v-if="songDetail !== null"
+            ><i class="iconfont icon-xiangshangjiantou"></i
+          ></span>
+          <img
+            :src="
+              songDetail === null
+                ? 'https://s4.music.126.net/style/web2/img/default/default_album.jpg'
+                : songDetail.al.picUrl
+            "
+            alt=""
+          />
+        </div>
+      </div>
     </div>
     <!-- 歌名+歌手+进度条 -->
     <div class="song-and-progress">
       <div class="song-artist" v-if="songDetail !== null">
         <span class="song-name">{{ songDetail.name }}</span>
-        <span class="ar-name" v-for="item in songDetail.ar" :key="item.id">{{
-          item.name
-        }}</span>
+        <span
+          class="ar-name"
+          v-for="(item, index) in songDetail.ar"
+          :key="index"
+          >{{ item.name }}</span
+        >
       </div>
       <div class="progress-box">
         <!-- 总进度条 -->
@@ -74,7 +91,11 @@
       </div>
       <!-- 播放列表 -->
       <div class="songlist">
-        <transition name="slist">
+        <transition
+          name="animate__animated animate__bounce"
+          enter-active-class="animate__backInRight"
+          leave-active-class="animate__backOutRight"
+        >
           <Songlist
             v-show="showSongList"
             ref="Songlist"
@@ -100,6 +121,7 @@
 </template>
 
 <script>
+import "animate.css";
 import Songlist from "./children/Songlist.vue";
 export default {
   name: "Player",
@@ -125,6 +147,8 @@ export default {
       modeName: "循环",
       showSongList: false, // 是否显示播放列表
       Songlist: null, // 播放列表组件
+      showSong: false,
+      ty: -59,
     };
   },
   created() {
@@ -137,8 +161,9 @@ export default {
       setTimeout(() => {
         this.audio.play(); // 播放歌曲
         this.Songlist.getData(); // 更新播放列表
-        this.Songlist.updateSongDetail(); // 更新播放列表中正在演唱的歌曲
-        this.Songlist.setSongListSroll();
+        this.$bus.$emit("up"); // 更新播放列表中正在演唱的歌曲
+        this.Songlist.setSongListSroll(); // 更新播放列表的滚动条
+        this.$bus.$emit("up-song-datail");
       });
     });
     setTimeout(() => {
@@ -212,11 +237,13 @@ export default {
     // 歌曲开始播放
     curPlay() {
       this.flag = true;
+      this.$store.commit("SETFLAG", true);
       this.btnIcon = "iconfont icon-zanting";
     },
     // 歌曲暂停
     curPause() {
       this.flag = false;
+      this.$store.commit("SETFLAG", false);
       this.btnIcon = "iconfont icon-bofang1";
     },
     // 控制播放暂停
@@ -239,6 +266,7 @@ export default {
     // 当前歌曲播放进度的时间
     updateSongTime() {
       this.curTime = this.audio.currentTime;
+      this.$store.commit("SETCURTIME", this.audio.currentTime);
       // 更新进度条
       this.CurProgress.style.width = (this.curTime / this.duration) * 100 + "%";
 
@@ -282,9 +310,7 @@ export default {
           }
         }
         localStorage.setItem("index", JSON.stringify(index));
-
         this.$store.dispatch("SongUrl");
-        this.Songlist.updateSongDetail();
         this.Songlist.setSongListSroll();
       } else {
         return;
@@ -398,6 +424,21 @@ export default {
         this.curTime = 0;
       }, 100);
     },
+    // 跳转至歌曲详情
+    toSong() {
+      let song = JSON.parse(localStorage.getItem("song"));
+      if (song) {
+        if (this.ty === -59) {
+          this.ty = 16;
+          this.$bus.$emit("showSongDetail");
+        } else {
+          this.ty = -59;
+          this.$bus.$emit("showSongDetail");
+        }
+      } else {
+        return;
+      }
+    },
   },
 };
 </script>
@@ -410,6 +451,8 @@ export default {
   display: flex;
   width: 1240px;
   margin: 0 auto;
+  z-index: 3;
+
   .music-btn {
     display: flex;
     height: 40px;
@@ -460,18 +503,80 @@ export default {
       }
     }
   }
-  .cover {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ccc;
-    margin-top: 10px;
-    margin-left: 160px;
-    cursor: pointer;
-    img {
-      width: 100%;
+  .c-b-box {
+    width: 230px;
+    height: 100%;
+    margin: 0 10px 0 15px;
+    transition: all 0.5s;
+    transform: translateY(-59px);
+    overflow: hidden;
+    .cover {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      float: right;
+      cursor: pointer;
+      &:hover {
+        .cover-bg {
+          display: block;
+        }
+      }
+      .cover-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: none;
+        background: rgba(0, 0, 0, 0.36);
+        z-index: 3;
+        i {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          color: #f6f6f6;
+        }
+      }
+      img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .btns {
+      display: flex;
       height: 100%;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      p {
+        border: 1px solid #25b3c9;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 38px;
+        margin: 0 10px;
+        cursor: pointer;
+        i {
+          color: #527daf;
+          font-weight: 900;
+        }
+        &:hover {
+          background: #25b3c9;
+        }
+      }
+      div {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        cursor: pointer;
+      }
     }
   }
+
   .song-and-progress {
     position: relative;
     margin-left: 20px;
@@ -570,9 +675,9 @@ export default {
   .tools {
     display: flex;
     position: absolute;
-    right: 100px;
+    right: -80px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-150%);
     .volume,
     .mode,
     .songlist {
@@ -635,36 +740,6 @@ export default {
             }
           }
         }
-      }
-    }
-    .songlist {
-      // 定义组件在被插入时的状态
-      .slist-enter {
-        left: 500px;
-        opacity: 0;
-      }
-      // 定义组件正在插入的状态
-      .slist-enter-active {
-        transition: all 0.6s;
-      }
-      // 定义组件插入完成的状态
-      .slist-enter-to {
-        left: 0;
-        opacity: 1;
-      }
-      // 离开组件的开始状态
-      .slist-leave {
-        left: 0;
-        opacity: 1;
-      }
-      // 正在离开组件的状态
-      .slist-leave-active {
-        transition: all 0.6s;
-      }
-      // 组件离开结束的状态
-      .slist-leave-to {
-        left: 500px;
-        opacity: 0;
       }
     }
   }
