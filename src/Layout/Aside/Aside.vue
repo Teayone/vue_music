@@ -10,16 +10,21 @@
         {{ item.name }}
       </li>
     </ul>
+
+    <!-- 登陆后我创建的歌单 -->
+    <MyCreateList v-if="$store.state.loginState" />
   </div>
 </template>
 
 <script>
+import MyCreateList from "./children/MyCreateList.vue";
 export default {
   name: "Aside",
+  components: { MyCreateList },
   data() {
     return {
       list: [
-        { link: "/", name: "个性推荐" },
+        { link: "/home", name: "个性推荐" },
         { link: "/playlist", name: "歌单" },
         { link: "/toplist", name: "排行榜" },
         { link: "/artist", name: "歌手" },
@@ -47,6 +52,8 @@ export default {
 #aside {
   width: 360px;
   height: 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
   background-color: #fff;
   border-right: 1px solid #ccc;
   overflow-y: auto;

@@ -56,7 +56,15 @@
       </ul>
       <!-- tabs内容区显示区域 -->
       <Songlist :songs="listAllSongs" v-if="curIndex === 0" />
-      <Comment v-else-if="curIndex === 1" />
+      <Comment
+        :hotComment="hotComment"
+        :newComment="newComment"
+        :total="total"
+        :showLoading="showLoading"
+        :showComment="showComment"
+        v-else-if="curIndex === 1"
+        @currentChange="currentChange"
+      />
       <Collection v-else />
     </div>
   </div>
@@ -66,7 +74,11 @@
 import Songlist from "@/components/common/Songlist/Songlist.vue";
 import Comment from "@/components/common/Comment/Comment.vue";
 import Collection from "./children/Collection.vue";
-import { getWholeSongs, getSongDetail } from "@/network/api";
+import {
+  getWholeSongs,
+  getSongDetail,
+  getPlayListComment,
+} from "@/network/api";
 import { playlistPlay } from "@/mixin/mixin";
 export default {
   name: "PlaylistDetail",
@@ -79,6 +91,11 @@ export default {
       listAllSongs: null,
       flodBtn: "iconfont icon-xiasanjiaoxing ", // 展开按钮
       flag: true, // 简介正在折叠
+      hotComment: [], // 热评
+      newComment: [], // 新评
+      total: 0, // 评论条数
+      showLoading: false, // 加载动画
+      showComment: false, // 有评论就显示评论，没有就显示暂无评论
     };
   },
   created() {
@@ -89,9 +106,13 @@ export default {
   methods: {
     toggleTabs(i) {
       this.curIndex = i;
+      if (i === 1) {
+        this.getCommentData(this.$route.query.id);
+      }
     },
     async getData(id) {
       let { data: res } = await getWholeSongs(id);
+
       this.playlist = res.playlist;
       let s = [];
       res.playlist.trackIds.forEach((item) => {
@@ -109,6 +130,29 @@ export default {
       } else {
         this.flag = true;
         this.flodBtn = "iconfont icon-xiasanjiaoxing ";
+      }
+    },
+    // 获取评论数据
+    async getCommentData(id, offset, before) {
+      this.showLoading = true;
+      let { data: res } = await getPlayListComment(id, offset, before);
+      this.showLoading = false;
+      if (res.comments.length === 0) {
+        this.showComment = true;
+        return;
+      }
+      this.hotComment = res.hotComments || [];
+      this.newComment = res.comments || [];
+      this.total = res.total;
+    },
+    // 翻页
+    currentChange(newPage) {
+      let id = this.$route.query.id;
+      if (this.total >= 5000) {
+        let l = this.newComment[this.newComment.length - 1].time;
+        this.getCommentData(id, newPage, l);
+      } else {
+        this.getCommentData(id, newPage);
       }
     },
   },

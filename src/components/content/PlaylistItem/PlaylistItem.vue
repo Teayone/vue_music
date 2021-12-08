@@ -2,9 +2,13 @@
   <div id="playlist-item">
     <!-- item歌单 -->
     <div class="img-box" @click.stop="toPlaylistDetail">
-      <div>
-        <i class="iconfont icon-bofangqi-bofang"></i>
-        {{ playCount | formatPlayCount }}
+      <div class="playcount-icon">
+        <span class="icon-bg">
+          <span>
+            <i class="iconfont icon-bofangqi-bofang"></i
+            >{{ playCount | formatPlayCount }}
+          </span>
+        </span>
       </div>
       <slot></slot>
       <p @click.stop="playSong">
@@ -51,19 +55,36 @@ export default {
         opacity: 1;
       }
     }
-    div {
+    .playcount-icon {
       position: absolute;
-      top: 5px;
-      right: 5px;
+      width: 100%;
       color: #e8f8f7;
-      z-index: -1;
+      z-index: 2;
       font-size: 12px;
-      i {
-        vertical-align: middle;
-        position: relative;
-        top: -1px;
-        left: 5px;
-        font-size: 12px;
+      .icon-bg {
+        position: absolute;
+        width: 100%;
+        height: 30px;
+        z-index: 2;
+        background-image: linear-gradient(
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0.1),
+          rgba(0, 0, 0, 0)
+        );
+
+        span {
+          float: right;
+          margin-top: 5px;
+          margin-right: 5px;
+          i {
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
+            left: 5px;
+            font-size: 12px;
+            margin-right: 5px;
+          }
+        }
       }
     }
     img {

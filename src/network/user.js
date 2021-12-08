@@ -19,3 +19,26 @@ export function getUserAdminDetail(){
     }
   })
 }
+// 用户歌单
+export function getUserPlayList(uid,offset){
+  let cookies = localStorage.getItem('userInfo')?localStorage.getItem('userInfo'):''
+  let encode = encodeURIComponent(cookies)
+  if(offset){
+    return request({
+      url:'/user/playlist',
+      params:{
+        uid,
+        cookie:encode,
+        offset
+      }
+    })
+  }else{
+    return request({
+      url:'/user/playlist',
+      params:{
+        uid,
+        cookie:encode,
+      }
+    })
+  }
+}

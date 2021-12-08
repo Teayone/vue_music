@@ -1,8 +1,8 @@
-import { getWholeSongs, getSongDetail } from '../network/api' // 通过歌单请求所有歌曲数据
+import { getWholeSongs, getSongDetail,getSongInfo } from '../network/api' // 通过歌单请求所有歌曲数据
 export const updateSongDetail = {
   data() {
     return {
-      songDetail: null,
+      songDetail: {id:0},
     };
   },
   created(){
@@ -20,7 +20,7 @@ export const updateSongDetail = {
       if (song) {
         this.songDetail = song[index];
       } else {
-        this.songDetail = null;
+        this.songDetail =  {id:0};
       }
     },
   }
@@ -49,5 +49,44 @@ export const playlistPlay ={
             // getSongDetail()
           });
         },
+  }
+}
+
+// 单独的歌曲播放
+export const songPlay = {
+  methods:{
+    bofang(id) {
+    // 如果歌曲没有版权，则弹框提醒
+    getSongInfo(id).then((b) => {
+        let flag = true;
+        let song = JSON.parse(localStorage.getItem("song")?localStorage.getItem("song"):"[]");
+        for (let i = 0; i < song.length; i++) {
+          if (song[i].id === id) {
+            flag = false;
+            break;
+          }
+        }
+        // flag 为true 代表歌单中目前没有该歌曲
+        if (flag) {
+          // 将其添加到本地
+          song.push(b.data.songs[0]);
+          localStorage.setItem("song", JSON.stringify(song));
+          // 修改 index 为最后
+          localStorage.setItem('index',song.length-1)
+          this.$store.dispatch("SongUrl");
+        } else {
+          // 找出重复的歌在歌单中的下标位置
+          let i = song.findIndex((item) => {
+            return item.id === id;
+          });
+          // 存下index
+          localStorage.setItem('index',i)
+          this.$store.dispatch("SongUrl");
+       
+        }
+      });
+    
+
+  },
   }
 }

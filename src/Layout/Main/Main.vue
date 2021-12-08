@@ -1,8 +1,12 @@
 <template>
   <div id="main">
     <Aside />
-    <!-- 路由 -->
-    <router-view :key="key" v-if="isRouterAlive"></router-view>
+
+    <div class="route-layout">
+      <keep-alive
+        ><router-view :key="key" v-if="isRouterAlive"></router-view
+      ></keep-alive>
+    </div>
 
     <!-- 歌曲详情页 -->
     <transition
@@ -28,7 +32,6 @@ export default {
     return {
       isRouterAlive: true,
       showSongdetail: false, // 是否显示路由
-      song: null, // 正在播放放的歌曲数据
     };
   },
   mounted() {
@@ -40,6 +43,7 @@ export default {
     });
   },
   methods: {
+    // 刷新视图
     reload() {
       this.isRouterAlive = false;
       this.$nextTick(() => (this.isRouterAlive = true));
@@ -55,11 +59,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 #main {
   position: relative;
   display: flex;
   width: 100%;
   height: calc(100vh - 160px);
+  .route-layout {
+    flex: 1;
+  }
 }
 </style>

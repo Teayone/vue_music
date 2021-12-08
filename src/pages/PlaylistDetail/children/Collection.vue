@@ -79,14 +79,15 @@ export default {
       } else if (res.needLogin) {
         this.needLogin = true; // 是否显示登陆获取更多收藏者
       }
-      console.log(res.subscribers);
       this.subscribers = res.subscribers;
       this.total = res.total;
     },
     currentChange(newPage) {
       let id = this.$route.query.id;
       this.getData(id, newPage);
-      this.Blist.scrollIntoView();
+      this.$nextTick(() => {
+        this.Blist.scrollIntoView({ behavior: "smooth" });
+      });
     },
   },
 };

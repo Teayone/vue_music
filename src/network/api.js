@@ -71,7 +71,7 @@ export function getLoginPlayList(){
       }
    })
 }
-// 获取歌曲详情(可获取歌单所有歌曲)
+// 获取歌单所有歌曲
 export function getSongDetail(ids){
    return request({
       url:'/song/detail',
@@ -188,6 +188,90 @@ export function getLyric(id){
       url:'/lyric',
       params:{
          id
+      }
+   })
+}
+// 歌曲评论
+export function getMusicComment(id,offset,before){
+   if(offset){
+      return request({
+         url:'/comment/music',
+         params:{
+            id,
+            offset:(offset-1)*20
+         }
+      })
+   }else if(before){
+      return request({
+         url:'/comment/music',
+         params:{
+            id,
+            offset:(offset-1)*20,
+            before,
+       
+         }
+      })
+   }else{
+      return request({
+         url:'/comment/music',
+         params:{
+            id
+         }
+      })
+   }
+}
+// 相似歌单推荐(根据歌曲id推荐相似歌单)
+export function getSimiPlayList(id){
+   return request({
+      url:'/simi/playlist',
+      params:{
+         id
+      }
+   })
+}
+// 获取相似音乐
+export function getSimiSong(id){
+   return request({
+      url:'/simi/song',
+      params:{
+         id
+      }
+   })
+}
+// 获取独家放送
+export function getPersonalizedPrivatecontent(){
+   return request({
+      url:'/personalized/privatecontent'
+   })
+}
+
+// 新歌速递,默认获取全部类型
+export function getNewSong(type=0){
+   return request({
+      url:'/top/song',
+      params:{
+         type
+      }
+   })
+}
+// 推荐 MV
+export function getPersonalizedMv(){
+   return request({
+      url:'/personalized/mv'
+   })
+}
+// 热搜列表
+export function getSearchHotDetail(){
+   return request({
+      url:'/search/hot/detail'
+   })
+}
+// 搜索建议
+export function getSearchSuggest(keywords){
+   return request({
+      url:'/search/suggest',
+      params:{
+         keywords 
       }
    })
 }

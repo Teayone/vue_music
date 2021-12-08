@@ -10,3 +10,15 @@ export function phoneLogin(phone,password){
     }
   })
 } 
+// 退出登录
+export function outLogin(){
+  let cookies = localStorage.getItem('userInfo')?localStorage.getItem('userInfo'):''
+  let encode = encodeURIComponent(cookies)
+  return request({
+    url:'/logout',
+    params:{
+      cookie:encode
+    }
+
+  })
+}

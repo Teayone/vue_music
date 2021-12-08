@@ -2,13 +2,34 @@
   <div id="header">
     <div class="wrap">
       <div class="location-btn">
-        <i class="iconfont icon-fanhui"></i>
-        <i class="iconfont icon-qianjin"></i>
+        <i class="iconfont icon-fanhui" @click="go(-1)"></i>
+        <i class="iconfont icon-qianjin" @click="go(1)"></i>
       </div>
       <!-- 搜索框 -->
       <div class="search">
         <i class="iconfont icon-sousuo search-icon"></i>
-        <input type="text" placeholder="搜索" />
+        <input
+          type="text"
+          ref="input"
+          placeholder="搜索"
+          v-model.trim="searchMsg"
+          @focus="showSearchTips"
+          @blur="closeSearchTips"
+          @keyup.enter="search"
+          @input="getSearchProposal"
+        />
+        <!-- 只有当输入框还没输入内容时显示热搜列表 -->
+        <SearchTips
+          v-if="!searchMsg && isShow"
+          @search="search"
+          @allHistory="allHistory"
+        />
+        <!--搜索建议 -->
+        <SearchProposal
+          :searchMsg="searchMsg"
+          :searchData="ProposalData"
+          v-if="showProposal"
+        />
       </div>
       <!-- 登录&登陆成功后的头像 -->
       <div class="login" @click="ShowloginBox">
@@ -48,10 +69,14 @@
 </template>
 
 <script>
-import { phoneLogin } from "../../network/login";
-import { getUserAdminDetail } from "../../network/user";
+import { phoneLogin, outLogin } from "@/network/login";
+import { getUserAdminDetail } from "@/network/user";
+import { getSearchSuggest } from "@/network/api";
+import SearchTips from "./Childern/SearchTips.vue";
+import SearchProposal from "./Childern/SearchProposal";
 export default {
   name: "Header",
+  components: { SearchTips, SearchProposal },
   data() {
     return {
       showLoginBox: false,
@@ -59,6 +84,12 @@ export default {
       password: "",
       // 账号数据
       profile: null,
+      isShow: false, // 是否显示热搜列表
+      searchMsg: "",
+      timer: null, // 搜索建议防抖
+      ProposalData: null, // 搜索建议数据
+      showProposal: false, // 是否显示搜索建议
+      time: null, // 聚焦关闭提示框的防抖
     };
   },
   created() {
@@ -82,6 +113,7 @@ export default {
       phoneLogin(this.phone, this.password).then((v) => {
         if (v.data.code === 200) {
           this.profile = v.data.profile;
+          this.$store.commit("SETLOGINSTATE", true);
           localStorage.setItem("userInfo", v.data.cookie);
           this.showLoginBox = false;
           this.$bus.$emit("reload");
@@ -92,15 +124,97 @@ export default {
     },
     // 退出登录
     louginOut() {
-      localStorage.removeItem("userInfo");
-      localStorage.removeItem("user-detail");
-      this.profile = null;
-      this.$bus.$emit("reload");
+      outLogin().then((v) => {
+        if (this.$store.state.activeSongDetail) {
+          this.$bus.$emit("closeSongDetail");
+        }
+        this.$router.replace({
+          path: "/home",
+        });
+        localStorage.removeItem("userInfo");
+        localStorage.removeItem("user-detail");
+        this.$store.commit("SETLOGINSTATE", false);
+        this.profile = null;
+        this.$bus.$emit("reload");
+      });
     },
     // 如果已经登陆则刷新页面获取的用户数据
     async getUserData() {
       let { data: res } = await getUserAdminDetail();
       this.profile = res.profile;
+      this.$store.commit("SETLOGINSTATE", true);
+    },
+    // 聚焦事件
+    showSearchTips() {
+      this.isShow = true;
+      if (this.searchMsg) {
+        this.getSearchProposal();
+      }
+    },
+    // 失去焦点事件
+    closeSearchTips() {
+      this.time = setTimeout(() => {
+        this.isShow = false;
+        this.showProposal = false;
+      }, 200);
+    },
+    // 跳转到搜索页
+    search(searchWord) {
+      if (this.searchMsg) {
+        // 跳转到搜索页
+        return;
+      } else {
+        this.searchMsg = searchWord;
+        // 跳转到搜索页
+      }
+      // 取出本地是否有记录
+      let h = JSON.parse(localStorage.getItem("search-history"));
+      h = h || [];
+      if (h.length !== 0) {
+        let i = h.find((item) => {
+          return item.name === this.searchMsg;
+        });
+        if (i) {
+          return;
+        } else {
+          h.unshift({ name: this.searchMsg, id: Date.now() });
+          // 将其存到本地
+          localStorage.setItem("search-history", JSON.stringify(h));
+        }
+      } else {
+        h.push({ name: this.searchMsg, id: Date.now() });
+        localStorage.setItem("search-history", JSON.stringify(h));
+      }
+    },
+    // 获取搜索建议数据
+    getSearchProposal() {
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+      if (!this.searchMsg) return;
+      this.timer = setTimeout(() => {
+        getSearchSuggest(this.searchMsg).then((v) => {
+          this.ProposalData = v.data.result;
+          console.log(this.ProposalData);
+          this.showProposal = true;
+        });
+        this.timer = null;
+      }, 500);
+    },
+    // 前进后退
+    go(i) {
+      this.$router.go(i);
+    },
+    // 子组件的搜索历史的一些逻辑
+    allHistory(name) {
+      clearTimeout(this.time); // 关闭定时器，不销毁提示框
+      let i = this.$refs.input;
+      i.focus(); // 重新获取焦点
+      if (name) {
+        // 如果子组件传来值了，则搜索
+        this.search(name);
+        i.blur();
+      }
     },
   },
 };
@@ -112,6 +226,7 @@ export default {
   width: 100%;
   height: 80px;
   background: #ff7a9e;
+  z-index: 19;
   .wrap {
     position: absolute;
     display: flex;

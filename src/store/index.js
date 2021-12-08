@@ -6,7 +6,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     flag:false, // 歌曲是否正在播放
-    CurTime:0
+    CurTime:0,
+    activeSongDetail :false, // 是否进入了歌曲详情页
+    loginState:false // 登陆状态
   },
   mutations: {
     SETFLAG(state,bol){
@@ -14,7 +16,13 @@ export default new Vuex.Store({
     },
     SETCURTIME(state,time){
       state.CurTime = time
-    }
+    },
+    SETSONGDETAIL(state,bol){
+      state.activeSongDetail = bol
+    },
+   SETLOGINSTATE(state,bol){
+    state.loginState = bol
+   }
   },
   actions: {
     SongUrl(){

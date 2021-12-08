@@ -1,7 +1,7 @@
 <template>
   <div class="song-list-table">
     <LoadingMove title="载入中" v-if="songs === null" />
-    <div v-else>
+    <div v-if="songs">
       <div class="listsong no-1">
         <p class="caozuo">操作</p>
         <p class="title">标题</p>
@@ -13,7 +13,7 @@
         class="listsong no-list"
         v-for="(item, index) in songs"
         :key="item.id"
-        @dblclick="toPlay(item)"
+        @dblclick="bofang(item.id)"
       >
         <div class="num">
           <i
@@ -22,6 +22,7 @@
           ></i>
           <p v-else>{{ index + 1 }}</p>
         </div>
+
         <p class="caozuo">
           <i class="iconfont icon-aixin"></i>
         </p>
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-import { updateSongDetail } from "../../../mixin/mixin";
+import { updateSongDetail, songPlay } from "@/mixin/mixin";
 import LoadingMove from "../LoadingMove/LoadingMove.vue";
 export default {
   name: "Songlist",
@@ -50,45 +51,11 @@ export default {
   props: {
     songs: {
       type: Array,
-      default: null,
+      default: [],
     },
   },
-  mixins: [updateSongDetail],
-
-  methods: {
-    // 歌曲列表请求
-    toPlay(s) {
-      console.log(this.songs);
-      // 播放列表中的歌曲。
-      // 如果本地的播放列表中以有播放列表则找到对应的歌曲播放，反之追加到本地的播放列表中
-      let song = JSON.parse(localStorage.getItem("song"));
-      song = song || [];
-      // 如果 本地有歌曲列表
-      if (song.length !== 0) {
-        // 找到歌曲的位置
-        let i = song.findIndex((item) => {
-          return item.id === s.id;
-        });
-        // 如果找到了
-        if (i !== -1) {
-          localStorage.setItem("index", JSON.stringify(i));
-          this.$store.dispatch("SongUrl");
-        } else {
-          // 没找到就将歌曲数据追加
-          song.push(s);
-          localStorage.setItem("song", JSON.stringify(song));
-          localStorage.setItem("index", JSON.stringify(song.length - 1));
-          this.$store.dispatch("SongUrl");
-        }
-      } else {
-        // 如果本地没有播放列表则直接追加
-        song.push(s);
-        localStorage.setItem("song", JSON.stringify(song));
-        localStorage.setItem("index", JSON.stringify(song.length - 1));
-        this.$store.dispatch("SongUrl");
-      }
-    },
-  },
+  created() {},
+  mixins: [updateSongDetail, songPlay],
 };
 </script>
 
@@ -133,10 +100,12 @@ export default {
     }
     .title {
       flex: 1;
+      width: 0;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       margin-left: 10px;
+
       &.activeSong {
         color: #ff7a9e;
       }

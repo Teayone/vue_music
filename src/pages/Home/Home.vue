@@ -4,16 +4,24 @@
     <Title describe="推荐歌单" link="/playlist" />
     <Songsheet />
     <Title describe="独家放送" link="/sole" />
+    <Release />
+    <Title describe="最新音乐" link="/new-song" />
+    <NewSong />
+    <Title describe="推荐MV" link="/mv" />
+    <PersonalizedMv />
   </div>
 </template>
 
 <script>
-import Swiper from "@/components/content/Swiper/Swiper.vue";
-import Title from "@/components/common/Title/Title.vue";
-import Songsheet from "@/components/common/Songsheet/Songsheet.vue";
+import Swiper from "@/components/content/Swiper/Swiper";
+import Title from "@/components/common/Title/Title";
+import Songsheet from "@/components/common/Songsheet/Songsheet";
+import Release from "@/components/content/Release/Release";
+import NewSong from "@/components/content/NewSong/NewSong";
+import PersonalizedMv from "@/components/content/PersonalizedMv/PersonalizedMv";
 export default {
   name: "Home",
-  components: { Swiper, Title, Songsheet },
+  components: { Swiper, Title, Songsheet, Release, NewSong, PersonalizedMv },
 };
 </script>
 

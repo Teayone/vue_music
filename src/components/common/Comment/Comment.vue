@@ -78,53 +78,61 @@
 </template>
 
 <script>
-import { getPlayListComment, sendComment } from "../../../network/api";
-import LoadingMove from "../../../components/common/LoadingMove/LoadingMove.vue";
+import { sendComment } from "@/network/api";
+import LoadingMove from "@/components/common/LoadingMove/LoadingMove.vue";
 export default {
   name: "Comment",
   components: { LoadingMove },
+  props: {
+    hotComment: {
+      // 热评
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    newComment: {
+      // 全部评论
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    total: {
+      // 评论条数
+      type: Number,
+      default: 0,
+    },
+    showLoading: {
+      // 加载动画
+      type: Boolean,
+      default: false,
+    },
+    showComment: {
+      // 无评论时渲染另一个DOM
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
-      hotComment: [],
-      newComment: [],
-      total: 0,
-      showLoading: false, // 是否显示加载中动画
-      showComment: false, // 有评论就显示评论，没有就显示暂无评论
       Blist: null, // 评论DOM元素
       commentInfo: "",
     };
   },
-  created() {
-    this.getCommentData(this.$route.query.id);
-  },
+
   mounted() {
     setTimeout(() => {
-      this.Blist = document.querySelector(".b-list");
+      this.Blist = document.querySelector("#comment");
     }, 100);
   },
   methods: {
-    async getCommentData(id, offset, before) {
-      this.showLoading = true;
-      let { data: res } = await getPlayListComment(id, offset, before);
-      this.showLoading = false;
-      if (res.comments.length === 0) {
-        this.showComment = true;
-        return;
-      }
-      this.hotComment = res.hotComments || [];
-      this.newComment = res.comments || [];
-      this.total = res.total;
-    },
     // 翻页
     currentChange(newPage) {
-      let id = this.$route.query.id;
-      if (this.total >= 5000) {
-        let l = this.newComment[this.newComment.length - 1].time;
-        this.getCommentData(id, newPage, l);
-      } else {
-        this.getCommentData(id, newPage);
-      }
-      this.Blist.scrollIntoView();
+      this.$emit("currentChange", newPage);
+      this.$nextTick(() => {
+        this.Blist.scrollIntoView({ behavior: "smooth" });
+      });
     },
     // 发布评论
     publishComment() {

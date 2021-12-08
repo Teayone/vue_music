@@ -147,8 +147,7 @@ export default {
       modeName: "循环",
       showSongList: false, // 是否显示播放列表
       Songlist: null, // 播放列表组件
-      showSong: false,
-      ty: -59,
+      ty: -59, // 弹出歌曲详情页后显示其他内容的 位移距离
     };
   },
   created() {
@@ -163,9 +162,10 @@ export default {
         this.Songlist.getData(); // 更新播放列表
         this.$bus.$emit("up"); // 更新播放列表中正在演唱的歌曲
         this.Songlist.setSongListSroll(); // 更新播放列表的滚动条
-        this.$bus.$emit("up-song-datail");
+        this.$bus.$emit("up-song-datail"); // 更新歌曲详情页
       });
     });
+
     setTimeout(() => {
       this.progress = document.querySelector(".progress");
       this.CurProgress = document.querySelector(".progress>.cur-progress");
@@ -198,6 +198,13 @@ export default {
         // 6是小圆点宽度的一半
         _this.span.style.left = lt - 6 + "px";
         _this.CurProgress.style.width = lt + "px";
+        // 设置拖拽时音频的时长
+        let ct = (lt / _this.progress.offsetWidth) * _this.duration;
+        _this.curTime = ct;
+        //防止选择内容--当拖动鼠标过快时候，弹起鼠标，bar也会移动，修复bug
+        window.getSelection
+          ? window.getSelection().removeAllRanges()
+          : document.selection.empty();
       };
       document.onmouseup = function () {
         document.onmousemove = null;
@@ -399,7 +406,6 @@ export default {
         this.audio.loop = false;
       }
     },
-
     // 显示播放列表
     showList() {
       this.showSongList = !this.showSongList;
@@ -431,6 +437,9 @@ export default {
         if (this.ty === -59) {
           this.ty = 16;
           this.$bus.$emit("showSongDetail");
+          this.$bus.$on("closeSongDetail", () => {
+            this.toSong();
+          });
         } else {
           this.ty = -59;
           this.$bus.$emit("showSongDetail");
@@ -452,6 +461,7 @@ export default {
   width: 1240px;
   margin: 0 auto;
   z-index: 3;
+  // height: 80px;
 
   .music-btn {
     display: flex;
@@ -518,6 +528,7 @@ export default {
       margin-top: 10px;
       float: right;
       cursor: pointer;
+
       &:hover {
         .cover-bg {
           display: block;
@@ -704,6 +715,7 @@ export default {
         left: 50%;
         transform: translateX(-50%);
         display: none;
+        z-index: 9;
         .box {
           position: absolute;
           background: rgba(0, 0, 0, 0.5);

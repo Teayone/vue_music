@@ -1,5 +1,5 @@
 <template>
-  <div id="playlist">我是歌单页</div>
+  <div id="playlist"></div>
 </template>
 
 <script>

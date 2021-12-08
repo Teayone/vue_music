@@ -2,12 +2,21 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 //  component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 Vue.use(VueRouter)
-
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 const routes = [
   {
     path:'/',
-    component:()=>import(/* webpackChunkName: "home" */ '../pages/Home/Home.vue')
+    redirect:'/home',
+
   },
+  {
+    path:'/home',
+    component: ()=>import(/* webpackChunkName: "home" */ '../pages/Home/Home.vue')
+  },
+
   {
     path:'/playlist',
     component:()=>import( /* webpackChunkName: "playlist" */ '../pages/Playlist/Playlist.vue')
@@ -31,6 +40,10 @@ const routes = [
   {
     path:'/playlist-detail',
     component:()=>import( /* webpackChunkName: "playlist-detail" */ '../pages/PlaylistDetail/PlaylistDetail.vue')
+  },
+  {
+    path:'/play-mv',
+    component:()=>import( /* webpackChunkName: "play-mv" */ '../pages/Playmv/Playmv.vue')
   }
 ]
 
