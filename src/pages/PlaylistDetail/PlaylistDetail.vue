@@ -33,7 +33,11 @@
               >播放：<span>{{ playlist.playCount | formatPlayCount }}</span></em
             >
           </li>
-          <li class="jianjie" :class="{ unfold: !flag }">
+          <li
+            class="jianjie"
+            :class="{ unfold: !flag }"
+            v-if="playlist.description"
+          >
             简介：<span style="white-space: pre-wrap">{{
               playlist.description
             }}</span>

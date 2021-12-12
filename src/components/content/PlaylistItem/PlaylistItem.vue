@@ -1,5 +1,5 @@
 <template>
-  <div id="playlist-item">
+  <div id="playlist-item" :style="{ width: itemWidth + 'px' }">
     <!-- item歌单 -->
     <div class="img-box" @click.stop="toPlaylistDetail">
       <div class="playcount-icon">
@@ -24,7 +24,20 @@
 <script>
 export default {
   name: "PlaylistItem",
-  props: ["playCount", "describe"],
+  props: {
+    playCount: {
+      type: Number,
+      default: 0,
+    },
+    describe: {
+      type: String,
+      default: "",
+    },
+    itemWidth: {
+      type: Number,
+      default: 250,
+    },
+  },
   methods: {
     // 歌单封面的播放按钮
     playSong() {
@@ -40,7 +53,6 @@ export default {
 
 <style lang="less" scoped>
 #playlist-item {
-  width: 250px;
   margin-top: 20px;
   margin-bottom: 10px;
   .img-box {

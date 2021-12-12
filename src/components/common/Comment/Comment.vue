@@ -61,7 +61,7 @@
       </div>
 
       <!-- 翻页 -->
-      <div class="fanye">
+      <div class="fanye" v-if="total > 20">
         <el-pagination
           background
           layout="prev, pager, next"

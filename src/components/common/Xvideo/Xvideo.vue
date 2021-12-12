@@ -1,6 +1,7 @@
 <template>
   <!-- 视频组件 -->
   <div
+    ref="videoBox"
     id="video-box"
     :style="{ width: width + 'px', height: height + 'px' }"
     @mouseleave="hideTool"
@@ -8,21 +9,27 @@
   >
     <!-- 处理点击视频框播放暂停事件 -->
     <span @click="playVideo" class="video-bg"></span>
+    <!-- 加载动画 -->
+    <Loading v-show="showLoading" />
     <!-- 暂停时显示的内容 -->
     <PauseVideo
-      v-show="showPauseBg && videoEnd != true"
+      v-show="pauseView && showPauseBg && videoEnd != true"
       @playVideo="playVideo"
     />
     <!-- 视频结束时显示重播按钮 -->
-    <ResetVideo v-if="videoEnd" @resetVideo="playVideo" />
+    <ResetVideo v-if="resetView && videoEnd" @resetVideo="playVideo" />
 
     <video
-      src="~@/assets/vd/ce.mp4"
+      :poster="cover"
+      :src="videoSrc"
       @play="play"
-      @pause="isPause && pause()"
+      @pause="pause"
       @canplay="canplay"
       @timeupdate="isUpdate && timeupdate()"
       @ended="ended"
+      @progress="loadingBar"
+      @waiting="waiting"
+      @playing="playing"
       ref="video"
     ></video>
 
@@ -39,17 +46,29 @@
       <!-- 满宽进度条 TOP-->
       <div class="hover-heigt-bar">
         <!-- 鼠标悬浮后的进度条的高度 -->
-        <div class="video-bar" @mousemove="showTimeTips" @click="jumpTime">
+        <div
+          ref="videoBar"
+          class="video-bar"
+          @mousemove="showTimeTips"
+          @click="jumpTime"
+        >
           <!-- 鼠标悬浮进度条提示对应的时间 -->
-          <div class="tips-time">
+          <div ref="tipsTime" class="tips-time" :style="{ left: tipsTimeLeft }">
             <span>{{ tipsCurTime | formatTimer }}</span>
           </div>
           <!-- 缓存进度条 -->
-          <div class="video-hc-bar"></div>
+          <div class="video-hc-bar" :style="{ width: loadingBarWidth }"></div>
           <!-- 播放进度进度条 -->
-          <div class="video-cur-bar" :style="{ backgroundColor: toolColor }">
+          <div
+            class="video-cur-bar"
+            :style="{ backgroundColor: toolColor, width: videoCurBarWidth }"
+          >
             <!-- 拖拽按钮 -->
-            <span @mousedown="videoMouseD"></span>
+            <span
+              class="video-yuan"
+              @mousedown="videoMouseD"
+              :style="{ left: DragPointleft }"
+            ></span>
           </div>
         </div>
       </div>
@@ -65,67 +84,26 @@
           <span class="video-dt-time">{{ dt | formatTimer }}</span>
         </div>
         <!-- 音量按钮 -->
-        <div class="video-volume">
-          <!-- 音量进度条 -->
-          <div class="hover-volume-bar">
-            <div class="volume-bar-box">
-              <div class="volume-bar" @click="jumpVolume">
-                <div
-                  class="volume-set-bar"
-                  :style="{ backgroundColor: toolColor }"
-                >
-                  <span @mousedown="volumeMouseD" id="volumePoint"></span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <i class="iconfont icon-yinliang"></i>
-        </div>
-
+        <VideoVolume
+          :toolColor="toolColor"
+          @volumeClick="volumeClick"
+          @volumeMouseMove="volumeMouseMove"
+        />
         <!-- 清晰度选择 -->
-        <div class="definition">
-          <div class="definition-list">
-            <ul>
-              <li
-                v-for="(item, index) in definitionList"
-                :key="index"
-                @click="switchDefinition(item)"
-                :class="{ active: item == definition }"
-              >
-                {{ item }}
-              </li>
-            </ul>
-          </div>
-          <p>{{ definition }}</p>
-        </div>
-
+        <VideoDefinition
+          @switchDefinition="switchDefinition"
+          :definition="definition"
+          :definitionList="definitionList"
+        />
         <!-- 倍速选择器 -->
-        <div class="beisu">
-          <div class="beisu-list">
-            <ul>
-              <li
-                v-for="(item, index) in speedList"
-                :key="index"
-                @click="switchSpeed(item)"
-                :class="{ active: item == videoSpeed }"
-              >
-                {{ item }}
-              </li>
-            </ul>
-          </div>
-          <p>倍速</p>
-        </div>
-
-        <!-- 全屏按钮 -->
-        <div class="full-screen" @click="quanping">
-          <i class="iconfont icon-quanping"></i>
-        </div>
+        <VideoSpeed @switchSpeed="switchSpeed" :speedList="speedList" />
+        <VideoFullScreen @fullScreen="quanping" />
       </div>
     </div>
     <!-- 工具栏消失以后底部小进度条 -->
     <div class="bar" :class="{ show: !isShow }">
-      <div class="hc-bar"></div>
-      <div class="cur-bar"></div>
+      <div class="hc-bar" :style="{ width: loadingBarWidth }"></div>
+      <div class="cur-bar" :style="{ width: videoCurBarWidth }"></div>
     </div>
   </div>
 </template>
@@ -133,11 +111,24 @@
 <script>
 import PauseVideo from "./children/PauseVideo/PauseVideo.vue";
 import ResetVideo from "./children/ResetVideo/ResetVideo.vue";
+import VideoVolume from "./children/VideoVolume/VideoVolume.vue";
+import VideoDefinition from "./children/VideoDefinition/VideoDefinition.vue";
+import VideoSpeed from "./children/VideoSpeed/VideoSpeed.vue";
+import VideoFullScreen from "./children/VideoFullScreen/VideoFullScreen.vue";
+import Loading from "./children/Loading/Loading.vue";
 import { videoData } from "./JS/mixin";
 
 export default {
   name: "Xvideo",
-  components: { PauseVideo, ResetVideo },
+  components: {
+    PauseVideo,
+    ResetVideo,
+    VideoVolume,
+    VideoDefinition,
+    VideoSpeed,
+    VideoFullScreen,
+    Loading,
+  },
   mixins: [videoData],
 };
 </script>

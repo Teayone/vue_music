@@ -260,6 +260,92 @@ export function getPersonalizedMv(){
       url:'/personalized/mv'
    })
 }
+// 最新MV
+export function getMvFirst(area){
+   return request({
+      url:'/mv/first',
+      params:{
+         area
+      }
+   })
+}
+// 全部MV
+export function getMvAll(area,order,offset){
+   if(offset){
+      return request({
+         url:'/mv/all',
+         params:{
+            area,
+            order,
+            offset:(offset-1)*30
+         }
+      })
+   }else{
+      return request({
+         url:'/mv/all',
+         params:{
+            area,
+            order,
+         }
+      })
+   }
+
+}
+// 网易出品MV
+export function getMvExclusiveRcmd(offset){
+   if(offset){
+      return request({
+         url:'/mv/exclusive/rcmd',
+         params:{
+            offset:(offset-1)*30
+         }
+      })
+   }else{
+      return request({
+         url:'/mv/exclusive/rcmd',
+      })
+   }
+
+}
+// MV排行
+export function getTopMv(area,limit){
+   return request({
+      url:'/top/mv',
+      params:{
+         area,
+         limit
+      }
+   })
+}
+// 获取全部视频
+export function getVideoTimelineAll(offset){
+   let cookies = localStorage.getItem('userInfo')?localStorage.getItem('userInfo'):''
+   let encode = encodeURIComponent(cookies)
+   return request({
+      url:'/video/timeline/all',
+      params:{
+         offset,
+         cookie:encode,
+      }
+   })
+}
+// 获取视频标签列表
+export function getVideoGroupList(){
+   return request({
+      url:'/video/group/list'
+   })
+}
+// 获取视频分类列表
+export function getVideoCategoryList(){
+   let cookies = localStorage.getItem('userInfo')?localStorage.getItem('userInfo'):''
+   let encode = encodeURIComponent(cookies)
+   return request({
+      url:'/video/category/list',
+      params:{
+         cookie:encode
+      }
+   })
+}
 // 热搜列表
 export function getSearchHotDetail(){
    return request({
@@ -273,5 +359,70 @@ export function getSearchSuggest(keywords){
       params:{
          keywords 
       }
+   })
+}
+
+// 获取mv地址
+export function getMvUrl(id,r=1080){
+   return request({
+      url:'/mv/url',
+      params:{
+         id,
+         r
+      }
+   })
+}
+// 获取 mv分辨率列表(和mv信息详情)
+export function getMvDetail(mvid){
+   return request({
+      url:'/mv/detail',
+      params:{
+         mvid
+      }
+   })
+}
+// 获取 mv评论
+export function getMvComMent(id,offset,before){
+   if(before){
+      return request({
+         url:'/comment/mv',
+         params:{
+            id,
+            offset:(offset-1)*20,
+            before
+         }
+      })
+   }else if(offset){
+      return request({
+         url:'/comment/mv',
+         params:{
+            id,
+            offset:(offset-1)*20,
+     
+         }
+      })
+   }else {
+      return request({
+         url:'/comment/mv',
+         params:{
+            id,
+         }
+      })
+   }
+
+}
+// 获取相似 mv
+export function getSimiMV(mvid){
+   return request({
+      url:'/simi/mv',
+      params:{
+         mvid
+      }
+   })
+}
+// 排行榜详情
+export function getTopList(){
+   return request({
+      url:'/toplist/detail',
    })
 }

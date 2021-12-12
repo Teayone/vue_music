@@ -209,8 +209,8 @@ export default {
       document.onmouseup = function () {
         document.onmousemove = null;
         _this.isUpdate = true; // timeupdate事件生效
-        _this.audio.currentTime =
-          (lt / _this.progress.offsetWidth) * _this.duration;
+        _this.audio.currentTime = _this.curTime;
+
         document.onmouseup = null;
       };
     },
@@ -361,6 +361,10 @@ export default {
         _this.Bar.style.height = yuanTop + 6 + "px";
         let v = ((yuanTop + 6) / _this.volumeBar.offsetHeight).toFixed(1);
         _this.audio.volume = v;
+        //防止选择内容--当拖动鼠标过快时候，弹起鼠标，bar也会移动，修复bug
+        window.getSelection
+          ? window.getSelection().removeAllRanges()
+          : document.selection.empty();
       };
       document.onmouseup = function () {
         localStorage.setItem("volume", yuanTop);
