@@ -33,7 +33,7 @@ export default {
     height: 50px;
     border-radius: 50%;
     text-align: center;
-    line-height: 50px;
+    line-height: 48px;
     border: 2px solid rgba(255, 255, 255, 0.4);
     cursor: pointer;
     &:hover {
@@ -45,7 +45,6 @@ export default {
     i {
       font-size: 40px;
       margin-left: 5px;
-      margin-top: -2px;
       color: rgba(255, 255, 255, 0.5);
     }
   }

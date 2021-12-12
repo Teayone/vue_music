@@ -346,6 +346,76 @@ export function getVideoCategoryList(){
       }
    })
 }
+// 获取 分类或标签对应的视频列表
+export function getVideoGroup(id,offset){
+   let cookies = localStorage.getItem('userInfo')?localStorage.getItem('userInfo'):''
+   let encode = encodeURIComponent(cookies)
+   return request({
+      url:'/video/group',
+      params:{
+         id,
+         offset,
+         cookie:encode
+      }
+   })
+}
+// 获取视频详情
+export function getVideoDetail(id){
+   return request({
+      url:'/video/detail',
+      params:{
+         id
+      }
+   })
+}
+// 获取视频地址
+export function getVideoUrl(id){
+   return request({
+      url:'/video/url',
+      params:{
+         id
+      }
+   })
+}
+// 获取相关视频
+export function getRelatedAllvideo(id){
+   return request({
+      url:'/related/allvideo',
+      params:{
+         id
+      }
+   })
+}
+// 获取视频评论
+export function getCommentVideo(id,offset,before){
+   if(before){
+      return request({
+         url:'/comment/video',
+         params:{
+            id,
+            offset:(offset-1)*20,
+            before
+         }
+      })
+   }else if(offset){
+      return request({
+         url:'/comment/video',
+         params:{
+            id,
+            offset:(offset-1)*20,
+         }
+      })
+   }else{
+      return request({
+         url:'/comment/video',
+         params:{
+            id,
+         
+         }
+      })
+   }
+
+}
 // 热搜列表
 export function getSearchHotDetail(){
    return request({

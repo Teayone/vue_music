@@ -133,27 +133,6 @@ export default {
     width: 780px;
     flex-grow: 0;
     flex-shrink: 0;
-
-    .mv-btn {
-      padding: 0px 40px;
-      display: flex;
-      margin-top: 30px;
-      li {
-        width: 120px;
-        height: 35px;
-        text-align: center;
-        line-height: 32px;
-        border: 1px solid #ccc;
-        border-radius: 20px;
-        font-size: 14px;
-        cursor: pointer;
-        margin-right: 10px;
-
-        &:hover {
-          background: #f2f2f2;
-        }
-      }
-    }
     .cm {
       margin-top: 80px;
       h2 {

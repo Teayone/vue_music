@@ -44,6 +44,10 @@ const routes = [
   {
     path:'/play-mv',
     component:()=>import( /* webpackChunkName: "play-mv" */ '../pages/Playmv/Playmv.vue')
+  },
+  {
+    path:'/play-video',
+    component:()=>import( /* webpackChunkName: "play-video" */ '../pages/Playvideo/Playvideo.vue' )
   }
 ]
 

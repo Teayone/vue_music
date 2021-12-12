@@ -3,15 +3,15 @@
   <ul class="mv-btn">
     <li>
       <i class="iconfont icon-dianzan"></i>
-      赞
+      赞<span v-if="praisedCount !== 0">({{ praisedCount }})</span>
     </li>
     <li>
       <i class="iconfont icon-shoucang1"></i>
-      收藏({{ subCount }})
+      收藏<span v-if="subCount !== 0">({{ subCount }})</span>
     </li>
     <li>
       <i class="iconfont icon-fenxiang"></i>
-      分享({{ shareCount }})
+      分享<span v-if="shareCount !== 0">({{ shareCount }})</span>
     </li>
     <li>
       <i class="iconfont icon-xiazai"></i>
@@ -24,6 +24,10 @@
 export default {
   name: "Btns",
   props: {
+    praisedCount: {
+      type: Number,
+      default: 0,
+    },
     subCount: {
       type: Number,
       default: 0,
@@ -39,7 +43,7 @@ export default {
 .mv-btn {
   padding: 0px 40px;
   display: flex;
-  margin-top: 30px;
+  margin-top: 20px;
   li {
     padding: 10px 30px;
     border: 1px solid #ccc;

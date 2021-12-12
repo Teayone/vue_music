@@ -1,6 +1,6 @@
 <template>
   <div class="video-list">
-    <div class="video-cover-img">
+    <div class="video-cover-img" @click="playVideoClick">
       <!-- 视频播放数量 -->
       <p class="play-count-bg">
         <span
@@ -14,7 +14,7 @@
     </div>
     <div class="video-info">
       <!-- 视频名字 -->
-      <h5>{{ videoName }}</h5>
+      <h5 @click="playVideoClick">{{ videoName }}</h5>
       <!-- 视频作者 -->
       <p>
         <i>by</i> <span>{{ nicName }}</span>
@@ -48,6 +48,11 @@ export default {
       default: "",
     },
   },
+  methods: {
+    playVideoClick() {
+      this.$emit("playClick");
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -57,7 +62,7 @@ export default {
   .video-cover-img {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 180px;
     cursor: pointer;
     .play-count-bg {
       position: absolute;

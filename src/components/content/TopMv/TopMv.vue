@@ -86,6 +86,8 @@ export default {
     flex-grow: 0;
     flex-shrink: 0;
     cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
     p {
       position: absolute;
       top: 0;

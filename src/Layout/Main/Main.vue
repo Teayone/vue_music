@@ -2,10 +2,8 @@
   <div id="main">
     <Aside />
 
-    <div class="route-layout">
-      <keep-alive
-        ><router-view :key="key" v-if="isRouterAlive"></router-view
-      ></keep-alive>
+    <div class="route-layout" v-if="isRouterAlive">
+      <keep-alive><router-view :key="key"></router-view></keep-alive>
     </div>
 
     <!-- 歌曲详情页 -->
@@ -45,6 +43,7 @@ export default {
   methods: {
     // 刷新视图
     reload() {
+      console.log("我执行了");
       this.isRouterAlive = false;
       this.$nextTick(() => (this.isRouterAlive = true));
     },

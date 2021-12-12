@@ -49,6 +49,8 @@ export default {
   position: absolute;
   right: 110px;
   font-size: 14px;
+  width: 32px;
+  text-align: center;
 
   &:hover {
     .definition-list {

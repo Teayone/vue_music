@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { songPlay } from "../../../mixin/mixin";
+import { songPlay } from "@/mixin/mixin";
 export default {
   name: "SearchProposal",
   props: {
@@ -92,7 +92,6 @@ export default {
   background: #fff;
   border-radius: 10px;
   overflow-y: auto;
-
   h2 {
     padding: 10px;
     font-size: 14px;

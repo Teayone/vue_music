@@ -53,22 +53,26 @@ export default {
   },
   methods: {
     async getVideoData() {
-      let { data: vgList } = await getVideoGroupList();
-      this.videoGroupList = vgList.data;
-      let { data: vcList } = await getVideoCategoryList();
-      this.VideoCategoryList = vcList.data;
+      try {
+        let { data: vgList } = await getVideoGroupList();
+        this.videoGroupList = vgList.data;
+        let { data: vcList } = await getVideoCategoryList();
+        this.VideoCategoryList = vcList.data;
+      } catch (error) {}
     },
     allClick() {
+      this.isShow = false;
       this.lable = "全部视频";
-      this.$emit("allClick"); // 需请求全部视频
+      this.$emit("allClick", "全部视频"); // 需请求全部视频
     },
     lableClick(id, name) {
+      this.isShow = false;
       this.lable = name;
-      this.$emit("groupClick", id);
+      this.$emit("groupClick", id, name);
     },
     categoryClick(id, name) {
       this.lable = name;
-      this.$emit("groupClick", id);
+      this.$emit("groupClick", id, name);
     },
   },
 };
@@ -82,6 +86,7 @@ export default {
   justify-content: space-between;
   margin: 30px 0;
   width: 100%;
+  z-index: 3;
   .tips-title {
     position: relative;
     .all-video {

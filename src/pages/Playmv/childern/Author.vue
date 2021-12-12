@@ -20,7 +20,7 @@
               : 'iconfont icon-shangsanjiaoxing'
           "
           @click="isShow = !isShow"
-          v-if="desc !== ''"
+          v-if="desc !== null"
         ></i>
       </h2>
       <h5 class="t-i">

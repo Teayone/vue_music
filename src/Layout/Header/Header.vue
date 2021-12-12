@@ -128,9 +128,12 @@ export default {
         if (this.$store.state.activeSongDetail) {
           this.$bus.$emit("closeSongDetail");
         }
-        this.$router.replace({
-          path: "/home",
-        });
+        if (this.$route.path !== "/home") {
+          this.$router.replace({
+            path: "/home",
+          });
+        }
+
         localStorage.removeItem("userInfo");
         localStorage.removeItem("user-detail");
         this.$store.commit("SETLOGINSTATE", false);

@@ -56,7 +56,6 @@ export default {
     async getMvData() {
       let { data: res } = await getPersonalizedMv();
       this.mvData = res.result;
-      console.log(this.mvData);
     },
     mvClick(id) {
       this.$router.push({

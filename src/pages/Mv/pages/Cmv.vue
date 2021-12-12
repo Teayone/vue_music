@@ -103,7 +103,6 @@ export default {
       this.wyMV = WyMv.data.slice(0, 8);
       // MV排行榜
       let { data: topMv } = await getTopMv("内地", 10);
-      console.log(topMv);
       this.topMV = topMv.data;
     },
     // 最新MV切换地区
