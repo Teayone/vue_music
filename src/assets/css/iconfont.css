@@ -1,9 +1,9 @@
 @font-face {
   font-family: "iconfont";
   /* Project id 2888079 */
-  src: url('//at.alicdn.com/t/font_2888079_yae2upf1f5.woff2?t=1639141169437') format('woff2'),
-    url('//at.alicdn.com/t/font_2888079_yae2upf1f5.woff?t=1639141169437') format('woff'),
-    url('//at.alicdn.com/t/font_2888079_yae2upf1f5.ttf?t=1639141169437') format('truetype');
+  src: url('//at.alicdn.com/t/font_2888079_sn722mb6des.woff2?t=1639455377538') format('woff2'),
+    url('//at.alicdn.com/t/font_2888079_sn722mb6des.woff?t=1639455377538') format('woff'),
+    url('//at.alicdn.com/t/font_2888079_sn722mb6des.ttf?t=1639455377538') format('truetype');
 }
 
 .iconfont {
@@ -12,6 +12,34 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-kafei1:before {
+  content: "\e664";
+}
+
+.icon-kafei:before {
+  content: "\e60d";
+}
+
+.icon-smiling:before {
+  content: "\e63f";
+}
+
+.icon-zhuti:before {
+  content: "\e64a";
+}
+
+.icon-fengge:before {
+  content: "\e623";
+}
+
+.icon-cha:before {
+  content: "\e60c";
+}
+
+.icon-hulianwang:before {
+  content: "\e60b";
 }
 
 .icon-huore:before {

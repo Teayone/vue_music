@@ -157,7 +157,38 @@ export function getPlaylistSubscribers(id,offset){
    }
 
 }
+// 歌单分类
+export function getPlaylistCatlist(){
+   return request({
+      url:'/playlist/catlist'
+   })
+}
+// 热门歌单分类
+export function getPlaylistHot(){
+   return request({
+      url:'/playlist/hot'
+   })
+}
+// 获取网友精选歌单
+export function getTopPlaylist(cat,offset){
+   if(offset){
+      return request({
+         url:'/top/playlist',
+         params:{
+            cat,
+            offset:(offset-1)*50
+         }
+      })
+   }else{
+      return request({
+         url:'/top/playlist',
+         params:{
+            cat
+         }
+      })
+   }
 
+}
 // 发送评论
 export function sendComment({t,type,id,content}){
    let cookies = localStorage.getItem('userInfo')?localStorage.getItem('userInfo'):''

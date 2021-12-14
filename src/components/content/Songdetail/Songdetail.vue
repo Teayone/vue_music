@@ -349,7 +349,7 @@ export default {
   width: 100%;
   height: 100%;
   background: #fff;
-  z-index: 2;
+  z-index: 99;
   overflow: auto;
   .song-top {
     display: flex;
