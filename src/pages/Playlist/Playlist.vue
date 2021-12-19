@@ -14,7 +14,7 @@
         @playSong="playSong(item.id)"
         @jumpRouter="toPlaylistDetail(item.id)"
       >
-        <img :src="item.coverImgUrl" alt="" />
+        <img v-lazy="item.coverImgUrl" :key="item.coverImgUrl" alt="" />
       </PlaylistItem>
     </List>
     <!-- 翻页 -->

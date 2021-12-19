@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/element.js'
+// 图片懒加载插件
+import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload)
 
 Vue.config.productionTip = false
 Vue.filter('formatPlayCount',function(value){

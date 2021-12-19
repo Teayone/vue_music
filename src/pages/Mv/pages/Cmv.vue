@@ -96,8 +96,8 @@ export default {
       let { data: res } = await getMvFirst("内地");
       this.newMV = res.data.slice(0, 8);
       // 热播MV
-      let { data: mvAll } = await getMvAll("全部", "上升最快");
-      this.hotMV = mvAll.data.slice(0, 8);
+      let { data: mvAll } = await getMvAll("全部", "最热");
+      // this.hotMV = mvAll.data.slice(0, 8);
       // 网易出品MV
       let { data: WyMv } = await getMvExclusiveRcmd();
       this.wyMV = WyMv.data.slice(0, 8);
