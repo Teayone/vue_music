@@ -20,9 +20,9 @@
             <span><i :class="item.icon"></i>{{ item.name }}</span>
           </div>
           <!-- 右侧标签 -->
-          <div class="lable-list">
+          <div class="lable-list" v-if="subsData !== null">
             <span
-              v-for="subitem in sub[index]"
+              v-for="subitem in subsData[index]"
               :key="subitem.name"
               @click="subsClick(subitem.name)"
               ><i :class="{ active: subitem.name === tagsName }">{{
@@ -55,6 +55,7 @@ export default {
     return {
       category: [],
       sub: [],
+      subsData: null,
       tags: [],
       isShow: false,
       tagsName: "全部歌单", // 激活样式
@@ -68,31 +69,15 @@ export default {
     async getCategoryData() {
       let { data: res } = await getPlaylistCatlist();
       let { data: res2 } = await getPlaylistHot();
-      this.sub.push(
-        res.sub.filter((item) => {
-          return item.category == 0;
-        })
-      );
-      this.sub.push(
-        res.sub.filter((item) => {
-          return item.category == 1;
-        })
-      );
-      this.sub.push(
-        res.sub.filter((item) => {
-          return item.category == 2;
-        })
-      );
-      this.sub.push(
-        res.sub.filter((item) => {
-          return item.category == 3;
-        })
-      );
-      this.sub.push(
-        res.sub.filter((item) => {
-          return item.category == 4;
-        })
-      );
+      let subData = {};
+      res.sub.forEach((item) => {
+        if (!subData[item.category]) {
+          subData[item.category] = [item];
+        } else {
+          subData[item.category].push(item);
+        }
+      });
+      this.subsData = subData;
       this.tags = res2.tags;
     },
     // 全部歌单按钮

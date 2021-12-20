@@ -6,7 +6,7 @@
       <p>
         <i class="iconfont icon-huore"></i><span>{{ playCount }}</span>
       </p>
-      <img :src="imageSrc" alt="" />
+      <img v-lazy="imageSrc" :key="imageSrc" alt="" />
     </div>
     <div class="mv-info">
       <h5 @click="mvClick">{{ mvName }}</h5>

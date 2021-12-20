@@ -8,7 +8,7 @@
         >
       </p>
       <!-- 视频封面 -->
-      <img :src="imageSrc" alt="" />
+      <img v-lazy="imageSrc" :key="imageSrc" alt="" />
       <!-- 视频视长 -->
       <span class="video-dt">{{ dt | formatTimer }}</span>
     </div>

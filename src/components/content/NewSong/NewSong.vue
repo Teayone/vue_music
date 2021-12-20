@@ -7,7 +7,7 @@
     >
       <div class="cover-box" @click="bofang(item.id)">
         <span><i class="iconfont icon-bofangqi-bofang"></i></span>
-        <img :src="item.album.picUrl" />
+        <img v-lazy="item.album.picUrl" :key="item.album.picUrl" />
       </div>
       <div class="song-info">
         <h5>

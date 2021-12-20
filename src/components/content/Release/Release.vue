@@ -3,7 +3,7 @@
     <li v-for="item in result" :key="item.id" @click="toPlayMv(item.id)">
       <div class="img-box">
         <span class="img-bg"><i class="iconfont icon-bofang1"></i></span>
-        <img :src="item.picUrl" alt="" />
+        <img v-lazy="item.picUrl" :key="item.picUrl" alt="" />
       </div>
       <p>{{ item.name }}</p>
     </li>
