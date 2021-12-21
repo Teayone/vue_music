@@ -521,6 +521,15 @@ export function getSimiMV(mvid){
       }
    })
 }
+// 获取 MV点赞收藏分享数据
+export function getMvDetailInfo(mvid){
+  return request({
+      url:'/mv/detail/info',
+      params:{
+         mvid
+      }
+   })
+}
 // 排行榜详情
 export function getTopList(){
    return request({

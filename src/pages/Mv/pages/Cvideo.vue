@@ -53,6 +53,7 @@ export default {
       groupId: 0, // 视频标签或分类 ID
       kongVideo: false, // 是否显示暂无视频
       showVideo: false,
+      timeout: null, // 节流开关
     };
   },
   created() {
@@ -62,29 +63,7 @@ export default {
     let i = this.$parent.$refs.pageMV;
     if (this.needLogin) return;
     setTimeout(() => {
-      i.addEventListener("scroll", () => {
-        let sh = i.scrollHeight;
-        // 滚动到底部时触发
-        if (i.scrollTop + i.offsetHeight == sh) {
-          this.index += 1; //翻页
-          this.isShow = true; // 滚动到底部显示加载中
-          if (this.group === "全部视频") {
-            // 如果当前是全部视频
-            getVideoTimelineAll(this.index).then((v) => {
-              this.isShow = false; // 请求完毕关闭加载中
-              this.videoList.push(...v.data.datas);
-            });
-          } else {
-            getVideoGroup(this.groupId, this.index).then(
-              //反之就是标签或分类对应的视频
-              (v) => {
-                this.isShow = false; // 请求完毕关闭加载中
-                this.videoList.push(...v.data.datas);
-              }
-            );
-          }
-        }
-      });
+      i.addEventListener("scroll", this.throttle(this.scrollData, 80, i));
     }, 200);
   },
   methods: {
@@ -155,6 +134,41 @@ export default {
           id,
         },
       });
+    },
+    scrollData(i) {
+      console.log(i);
+      let sh = i.scrollHeight;
+      // 滚动到底部时触发
+      if (i.scrollTop + i.offsetHeight == sh) {
+        this.index += 1; //翻页
+        this.isShow = true; // 滚动到底部显示加载中
+        if (this.group === "全部视频") {
+          // 如果当前是全部视频
+          getVideoTimelineAll(this.index).then((v) => {
+            this.isShow = false; // 请求完毕关闭加载中
+            this.videoList.push(...v.data.datas);
+          });
+        } else {
+          getVideoGroup(this.groupId, this.index).then(
+            //反之就是标签或分类对应的视频
+            (v) => {
+              this.isShow = false; // 请求完毕关闭加载中
+              this.videoList.push(...v.data.datas);
+            }
+          );
+        }
+      }
+    },
+    throttle(func, delay, el) {
+      let time = null;
+      return function () {
+        if (time !== null) return;
+        time = setTimeout(() => {
+          console.log(el);
+          func.call(this, el);
+          time = null;
+        }, delay);
+      };
     },
   },
 };

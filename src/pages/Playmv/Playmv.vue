@@ -19,7 +19,11 @@
         :playCount="mvData.playCount"
         :desc="mvData.desc"
       />
-      <Btns :shareCount="mvData.shareCount" :subCount="mvData.subCount" />
+      <Btns
+        :shareCount="mvData.shareCount"
+        :subCount="mvData.subCount"
+        :praisedCount="mvData.likeCount"
+      />
       <div class="cm">
         <h2>评论({{ mvData.commentCount }})</h2>
         <Comment
@@ -47,7 +51,13 @@ import Author from "./childern/Author.vue";
 import Back from "./childern/Back.vue";
 import Btns from "./childern/Btns.vue";
 import Recommend from "./childern/Recommend.vue";
-import { getMvUrl, getMvDetail, getMvComMent, getSimiMV } from "@/network/api";
+import {
+  getMvUrl,
+  getMvDetail,
+  getMvComMent,
+  getSimiMV,
+  getMvDetailInfo,
+} from "@/network/api";
 export default {
   name: "Playmv",
   components: { Xvideo, Comment, Back, Author, Btns, Recommend },
@@ -89,6 +99,9 @@ export default {
       let { data: res } = await getMvUrl(id);
       this.mvUrl = res.data.url;
       this.mvR = res.data.r;
+      // 获取mv点赞评论收藏分享数据
+      let { data: mvinfo } = await getMvDetailInfo(id);
+      this.mvData.likeCount = mvinfo.likedCount;
       // 获取相似MV
       let { data: simiRes } = await getSimiMV(id);
       this.mvs = simiRes.mvs;

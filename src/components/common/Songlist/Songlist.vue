@@ -27,7 +27,8 @@
           <i class="iconfont icon-aixin"></i>
         </p>
         <p class="title" :class="{ activeSong: item.id === songDetail.id }">
-          {{ item.name }}
+          <span class="song-title-name">{{ item.name }}</span>
+          <MvIcon v-if="item.mv !== 0" @toPlayMv="toPlayMv(item.mv)" />
         </p>
         <div class="artist">
           <span v-for="(singer, i) in item.ar" :key="i">
@@ -45,17 +46,32 @@
 <script>
 import { updateSongDetail, songPlay } from "@/mixin/mixin";
 import LoadingMove from "../LoadingMove/LoadingMove.vue";
+import MvIcon from "./children/MvIcon.vue";
 export default {
   name: "Songlist",
-  components: { LoadingMove },
+  components: { LoadingMove, MvIcon },
   props: {
     songs: {
       type: Array,
       default: [],
     },
   },
-  created() {},
+  created() {
+    setTimeout(() => {
+      console.log(this.songs);
+    }, 200);
+  },
   mixins: [updateSongDetail, songPlay],
+  methods: {
+    toPlayMv(mvid) {
+      this.$router.push({
+        path: "/play-mv",
+        query: {
+          mvid,
+        },
+      });
+    },
+  },
 };
 </script>
 
@@ -101,11 +117,16 @@ export default {
     .title {
       flex: 1;
       width: 0;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
       margin-left: 10px;
-
+      display: flex;
+      align-items: center;
+      .song-title-name {
+        display: block;
+        max-width: 400px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
       &.activeSong {
         color: #ff7a9e;
       }

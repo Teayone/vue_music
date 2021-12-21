@@ -53,9 +53,13 @@
           @click="jumpTime"
         >
           <!-- 鼠标悬浮进度条提示对应的时间 -->
-          <div ref="tipsTime" class="tips-time" :style="{ left: tipsTimeLeft }">
-            <span>{{ tipsCurTime | formatTimer }}</span>
-          </div>
+          <span
+            ref="tipsTime"
+            class="tips-time"
+            :style="{ left: tipsTimeLeft }"
+          >
+            {{ tipsCurTime | formatTimer }}
+          </span>
           <!-- 缓存进度条 -->
           <div class="video-hc-bar" :style="{ width: loadingBarWidth }"></div>
           <!-- 播放进度进度条 -->
