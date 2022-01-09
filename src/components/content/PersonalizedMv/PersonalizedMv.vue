@@ -1,5 +1,5 @@
 <template>
-  <div id="personalized-mb">
+  <div class="personalized-mb">
     <div class="mv-cover-img" :class="{ show: show }" @click="mvClick">
       <!-- 鼠标悬浮显示的动画弹出层 -->
       <div class="move-title" v-if="copywriter">
@@ -64,10 +64,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#personalized-mb {
-  margin: 15px 0;
-  width: 23%;
-
+@media screen and (min-width: 800px) and (max-width: 1499px) {
+  .personalized-mb {
+    margin: 15px 0px;
+    width: 40%;
+  }
+}
+@media screen and(min-width:1500px) and(max-width:1920px) {
+  .personalized-mb {
+    margin: 15px 0;
+    width: 23%;
+  }
+}
+.personalized-mb {
   .mv-cover-img {
     position: relative;
     width: 100%;

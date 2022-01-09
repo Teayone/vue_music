@@ -159,20 +159,35 @@ export default {
       this.time = setTimeout(() => {
         this.isShow = false;
         this.showProposal = false;
+        this.time = null;
       }, 200);
     },
     // 跳转到搜索页
     search(searchWord) {
+      this.closeSearchTips();
+      this.$refs.input.blur();
+      // 如果当前输入框有值，则采用 enter 跳转到搜索页
       if (this.searchMsg) {
-        // 跳转到搜索页
-        return;
+        this.$router.push({
+          path: "/search",
+          query: {
+            keyword: this.searchMsg,
+          },
+        });
       } else {
-        this.searchMsg = searchWord;
-        // 跳转到搜索页
+        if (searchWord) {
+          this.searchMsg = searchWord;
+          // 跳转到搜索页
+          this.$router.push({
+            path: "search",
+            query: {
+              keyword: searchWord,
+            },
+          });
+        }
       }
-      // 取出本地是否有记录
-      let h = JSON.parse(localStorage.getItem("search-history"));
-      h = h || [];
+      // 查看本地是否有记录
+      let h = JSON.parse(localStorage.getItem("search-history")) || [];
       if (h.length !== 0) {
         let i = h.find((item) => {
           return item.name === this.searchMsg;
@@ -198,7 +213,6 @@ export default {
       this.timer = setTimeout(() => {
         getSearchSuggest(this.searchMsg).then((v) => {
           this.ProposalData = v.data.result;
-          console.log(this.ProposalData);
           this.showProposal = true;
         });
         this.timer = null;
@@ -280,7 +294,7 @@ export default {
         border-radius: 20px;
         border: none;
         outline: none;
-        padding-left: 27px;
+        padding-left: 30px;
         box-sizing: border-box;
         color: #fff9fb;
         background-color: #f47497;

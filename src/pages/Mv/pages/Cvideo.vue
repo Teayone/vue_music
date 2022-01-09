@@ -164,7 +164,6 @@ export default {
       return function () {
         if (time !== null) return;
         time = setTimeout(() => {
-          console.log(el);
           func.call(this, el);
           time = null;
         }, delay);

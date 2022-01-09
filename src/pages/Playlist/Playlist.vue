@@ -7,8 +7,8 @@
     <!--  -->
     <List>
       <PlaylistItem
-        v-for="item in playlists"
-        :key="item.id"
+        v-for="(item, index) in playlists"
+        :key="item.id + index"
         :playCount="item.playCount"
         :describe="item.name"
         @playSong="playSong(item.id)"

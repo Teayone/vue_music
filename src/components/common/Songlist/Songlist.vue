@@ -28,16 +28,31 @@
         </p>
         <p class="title" :class="{ activeSong: item.id === songDetail.id }">
           <span class="song-title-name">{{ item.name }}</span>
-          <MvIcon v-if="item.mv !== 0" @toPlayMv="toPlayMv(item.mv)" />
+          <MvIcon
+            v-if="(item.mv && item.mv !== 0) || (item.mvid && item.mvid !== 0)"
+            @toPlayMv="toPlayMv(item.mv || item.mvid)"
+          />
         </p>
         <div class="artist">
-          <span v-for="(singer, i) in item.ar" :key="i">
+          <span v-for="(singer, i) in item.ar || item.artists" :key="i">
             {{ singer.name }}
-            <span>{{ i === item.ar.length - 1 ? "" : "/" }}</span>
+            <span v-if="item.ar">{{
+              i === item.ar.length - 1 ? "" : "/"
+            }}</span>
+            <span v-if="item.artists">{{
+              i === item.artists.length - 1 ? "" : "/"
+            }}</span>
           </span>
         </div>
-        <p class="album">{{ item.al.name }}</p>
-        <p class="songtime">{{ (item.dt / 1000) | formatTimer }}</p>
+        <p class="album">
+          {{ (item.al && item.al.name) || (item.album && item.album.name) }}
+        </p>
+        <p class="songtime">
+          {{
+            (item.dt && item.dt / 1000) ||
+            (item.duration && item.duration / 1000) | formatTimer
+          }}
+        </p>
       </div>
     </div>
   </div>
@@ -55,11 +70,6 @@ export default {
       type: Array,
       default: [],
     },
-  },
-  created() {
-    setTimeout(() => {
-      console.log(this.songs);
-    }, 200);
   },
   mixins: [updateSongDetail, songPlay],
   methods: {

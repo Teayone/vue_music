@@ -33,11 +33,10 @@ export const playlistPlay ={
         playSong(id) {
           getWholeSongs(id).then((v) => {
             // 请求全部歌曲
-            let s = [];
-            v.data.playlist.trackIds.forEach((item) => {
-              s.push(item.id);
-            });
-            s = s.join(",");
+             let s = v.data.playlist.trackIds.map((item) => {
+              return item.id
+            }).join(',');
+  
             getSongDetail(s).then((res) => {
               // 将歌曲列表存到本地
               localStorage.setItem("song", JSON.stringify(res.data.songs));
@@ -46,12 +45,10 @@ export const playlistPlay ={
               // 通知Vuex发起请求获取某首音乐的URL
               this.$store.dispatch("SongUrl");
             });
-            // getSongDetail()
           });
         },
   }
 }
-
 // 单独的歌曲播放
 export const songPlay = {
   methods:{
@@ -88,5 +85,23 @@ export const songPlay = {
     
 
   },
+  }
+}
+// 搜索页搜索到的单曲全部播放
+export const allPlay = {
+  methods:{
+    allPlay(){
+      let s = this.songs.map(item=>{
+        return item.id
+      }).join(',')
+      getSongDetail(s).then((res) => {
+        // 将歌曲列表存到本地
+        localStorage.setItem("song", JSON.stringify(res.data.songs));
+        // 将歌曲索引存到本地
+        localStorage.setItem("index", JSON.stringify(0));
+        // 通知Vuex发起请求获取某首音乐的URL
+        this.$store.dispatch("SongUrl");
+      });
+    }
   }
 }

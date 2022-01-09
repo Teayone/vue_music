@@ -17,8 +17,13 @@
           v-for="item in SearchHistory"
           :key="item.id"
           @click.stop="searchHistory(item.name)"
-          >{{ item.name }}<i @click.stop="deleteHistroty(item.id)">x</i></span
-        >
+          >{{ item.name
+          }}<i
+            @click.stop="deleteHistroty(item.id)"
+            class="iconfont icon-chacha"
+            title="删除历史记录"
+          ></i
+        ></span>
       </div>
     </div>
     <!-- 热搜提示 -->
@@ -178,10 +183,13 @@ export default {
         i {
           position: absolute;
           right: 4px;
-          font-size: 16px;
-          top: 6px;
-          color: #999;
+          font-size: 12px;
+          top: 9px;
+          color: #ccc;
           display: none;
+          &:hover {
+            color: #333;
+          }
         }
         &:hover {
           background: #f2f2f2;

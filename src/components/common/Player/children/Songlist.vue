@@ -113,32 +113,36 @@ export default {
     },
     // 将当前正在播放的歌曲显示在正中央(移动滚动条)
     activeSongScroll() {
-      setTimeout(() => {
-        let Ulist = document.querySelector("#ul-list");
-        let Llist = document.querySelector("#ul-list>li.active");
-        let uh = Ulist.offsetHeight;
-        let lot = Llist.offsetTop;
-        if (lot >= uh) {
-          Ulist.scrollTop = lot - uh / 2;
-        } else {
-          Ulist.scrollTop = lot - uh / 2;
-        }
-      }, 200);
+      if (this.song) {
+        setTimeout(() => {
+          let Ulist = document.querySelector("#ul-list");
+          let Llist = document.querySelector("#ul-list>li.active");
+          let uh = Ulist.offsetHeight;
+          let lot = Llist.offsetTop;
+          if (lot >= uh) {
+            Ulist.scrollTop = lot - uh / 2;
+          } else {
+            Ulist.scrollTop = lot - uh / 2;
+          }
+        }, 200);
+      }
     },
     // 根据切换歌曲而移动滚动条
     setSongListSroll() {
-      setTimeout(() => {
-        let Ulist = document.querySelector("#ul-list");
-        let Llist = document.querySelector("#ul-list>li.active");
-        let uh = Ulist.offsetHeight;
-        let us = Ulist.scrollTop;
-        let lot = Llist.offsetTop;
-        if (lot >= uh + us) {
-          Ulist.scrollTop = lot - uh + Llist.offsetHeight;
-        } else if (lot <= us - Llist.offsetHeight) {
-          Ulist.scrollTop = lot;
-        }
-      });
+      if (this.song) {
+        setTimeout(() => {
+          let Ulist = document.querySelector("#ul-list");
+          let Llist = document.querySelector("#ul-list>li.active");
+          let uh = Ulist.offsetHeight;
+          let us = Ulist.scrollTop;
+          let lot = Llist.offsetTop;
+          if (lot >= uh + us) {
+            Ulist.scrollTop = lot - uh + Llist.offsetHeight;
+          } else if (lot <= us - Llist.offsetHeight) {
+            Ulist.scrollTop = lot;
+          }
+        });
+      }
     },
   },
 };
@@ -148,13 +152,12 @@ export default {
 #songlist {
   position: absolute;
   top: -525px;
-  left: -200px;
+  right: -250px;
   width: 500px;
   height: 500px;
   background: #fff;
   overflow: hidden;
   z-index: 2;
-  border: 1px solid #25b3c9;
   img.bg {
     position: absolute;
     width: 100%;

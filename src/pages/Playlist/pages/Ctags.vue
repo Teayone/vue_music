@@ -1,7 +1,7 @@
 <template>
   <div id="c-tags">
     <div class="tags-all">
-      <span class="all-playlist" @click="isShow = !isShow"
+      <span class="all-playlist" @click.stop="isShow = !isShow"
         >{{ tagsName }}<i class="iconfont icon-qianjin"></i
       ></span>
       <!-- 弹框 -->
@@ -102,6 +102,18 @@ export default {
       this.$emit("playlistClick", name);
     },
   },
+  watch: {
+    isShow(n) {
+      const _this = this;
+      if (n) {
+        document.addEventListener("click", toggleTips, false);
+      }
+      function toggleTips() {
+        _this.isShow = false;
+        document.removeEventListener("click", toggleTips);
+      }
+    },
+  },
 };
 </script>
 
@@ -190,6 +202,9 @@ export default {
               &.active {
                 background: #fef8fa;
                 color: #ff7a9e;
+              }
+              &:hover {
+                color: #d47f96;
               }
             }
           }

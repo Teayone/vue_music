@@ -4,7 +4,8 @@
       <!-- 视频播放数量 -->
       <p class="play-count-bg">
         <span
-          ><i class="iconfont icon-bofangqi-bofang"></i>{{ PlayCount }}</span
+          ><i class="iconfont icon-bofangqi-bofang"></i
+          >{{ PlayCount | formatPlayCount }}</span
         >
       </p>
       <!-- 视频封面 -->
@@ -16,8 +17,15 @@
       <!-- 视频名字 -->
       <h5 @click="playVideoClick">{{ videoName }}</h5>
       <!-- 视频作者 -->
-      <p>
+      <p v-if="nicName && !mv">
         <i>by</i> <span>{{ nicName }}</span>
+      </p>
+      <p v-if="mv && creator.length">
+        <em class="mv-icon"></em>
+        <i class="mv-artist-name" v-for="(item, index) in creator" :key="index">
+          {{ item.userName }}
+          <em>{{ index === creator.length - 1 ? "" : "/" }}</em>
+        </i>
       </p>
     </div>
   </div>
@@ -47,6 +55,16 @@ export default {
       type: String,
       default: "",
     },
+    mv: {
+      type: Boolean,
+      default: false,
+    },
+    creator: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   methods: {
     playVideoClick() {
@@ -70,6 +88,7 @@ export default {
       left: 0;
       height: 30px;
       width: 100%;
+      border-radius: 10px;
       background-image: linear-gradient(
         rgba(0, 0, 0, 0.2),
         rgba(0, 0, 0, 0.1),
@@ -90,6 +109,7 @@ export default {
       top: 0;
       width: 100%;
       height: 100%;
+      border-radius: 10px;
     }
     .video-dt {
       position: absolute;
@@ -127,6 +147,17 @@ export default {
         text-overflow: ellipsis;
         cursor: pointer;
       }
+    }
+    .mv-icon {
+      width: 20px;
+      height: 12px;
+      margin-right: 5px;
+      display: inline-block;
+      background: url("~@/assets/img/mvIcon.png") no-repeat;
+      background-size: 100%;
+    }
+    .mv-artist-name:hover {
+      color: #373737;
     }
   }
 }

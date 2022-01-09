@@ -138,7 +138,6 @@ export default {
   .official-right {
     flex: 1;
     margin-left: 20px;
-
     .rank-list {
       width: 100%;
       height: 100%;
@@ -148,6 +147,7 @@ export default {
         align-items: center;
         height: 20%;
         border-radius: 10px;
+        width: 100%;
         cursor: default;
         &:nth-child(odd) {
           background: #f9f9f9;
@@ -163,7 +163,6 @@ export default {
           }
         }
         .list-song {
-          max-width: 500px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -171,11 +170,38 @@ export default {
         .list-artist {
           position: absolute;
           right: 20px;
-          max-width: 400px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
           color: #9b9b9b;
+        }
+        @media screen and(max-width:799px) and (min-width: 400px) {
+          .list-song {
+            max-width: 30px;
+          }
+        }
+        @media screen and(max-width:918px) {
+          .list-artist {
+            display: none;
+          }
+        }
+        @media screen and (max-width: 1240px) and(min-width: 800px) {
+          .list-song {
+            max-width: 60px;
+          }
+          .list-artist {
+            max-width: 30px;
+          }
+        }
+        @media screen and (min-width: 1241px) and (max-width: 1920px) {
+          .list-song {
+            max-width: 500px;
+          }
+          .list-artist {
+            position: absolute;
+            right: 20px;
+            max-width: 400px;
+          }
         }
       }
     }

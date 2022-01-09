@@ -462,6 +462,27 @@ export function getSearchSuggest(keywords){
       }
    })
 }
+// 搜索详情
+export function getSearchResult(keywords,type,offset){
+   if(offset){
+      return request({
+         url:'/search',
+         params:{
+            keywords,
+            type,
+            offset:(offset-1)*30
+         }
+      })
+   }else{
+      return request({
+         url:'/search',
+         params:{
+            keywords,
+            type
+         }
+      })
+   }
+}
 
 // 获取mv地址
 export function getMvUrl(id,r=1080){

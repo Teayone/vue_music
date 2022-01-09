@@ -43,9 +43,11 @@ export default {
 #release {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   margin-top: 20px;
   li {
-    width: 32%;
+    width: 450px;
+    margin-bottom: 30px;
     .img-box {
       position: relative;
       width: 100%;

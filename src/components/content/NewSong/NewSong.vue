@@ -55,10 +55,9 @@ export default {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  // margin-top: 20px;
   li {
     display: flex;
-    width: 32%;
+    width: 400px;
     margin: 15px 0;
     &.active {
       background: #eaeaea;
