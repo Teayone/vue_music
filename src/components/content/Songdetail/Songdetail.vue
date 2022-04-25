@@ -331,12 +331,15 @@ export default {
       }
     },
     // 始终让高亮歌词显示在区域正中央
-    lyricIndex() {
-      if (this.lyricIndex >= 3) {
-        let activeLi = document.querySelector(".lyric ul>li.active");
-        this.oMoveLyric.scrollTop =
-          activeLi.offsetTop - this.oMoveLyric.offsetHeight / 2;
-      }
+    lyricIndex: {
+      handler() {
+        if (this.lyricIndex >= 3) {
+          let activeLi = document.querySelector(".lyric ul>li.active");
+          this.oMoveLyric.scrollTop =
+            activeLi.offsetTop - this.oMoveLyric.offsetHeight / 2;
+        }
+      },
+      immediate: true,
     },
   },
 };

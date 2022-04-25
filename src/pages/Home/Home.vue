@@ -8,19 +8,7 @@
     <Title describe="最新音乐" link="/new-song" />
     <NewSong />
     <Title describe="推荐MV" link="/mv" />
-    <List v-if="mvData">
-      <PersonalizedMv
-        v-for="item in mvData"
-        :key="item.id"
-        :imageSrc="item.picUrl"
-        :copywriter="item.copywriter"
-        :playCount="item.playCount"
-        :show="true"
-        :MvName="item.name"
-        :artists="item.artists"
-        @mvClick="mvClick(item.id)"
-      />
-    </List>
+    <ContainerMv />
   </div>
 </template>
 
@@ -30,9 +18,7 @@ import Title from "@/components/common/Title/Title";
 import Songsheet from "@/components/common/Songsheet/Songsheet";
 import Release from "@/components/content/Release/Release";
 import NewSong from "@/components/content/NewSong/NewSong";
-import PersonalizedMv from "@/components/content/PersonalizedMv/PersonalizedMv";
-import List from "../../components/common/List/List.vue";
-import { getPersonalizedMv } from "@/network/api";
+import ContainerMv from "@/components/content/ContainerMv";
 export default {
   name: "Home",
   components: {
@@ -41,30 +27,7 @@ export default {
     Songsheet,
     Release,
     NewSong,
-    PersonalizedMv,
-    List,
-  },
-  data() {
-    return {
-      mvData: null,
-    };
-  },
-  created() {
-    this.getMvData();
-  },
-  methods: {
-    async getMvData() {
-      let { data: res } = await getPersonalizedMv();
-      this.mvData = res.result;
-    },
-    mvClick(id) {
-      this.$router.push({
-        path: "/play-mv",
-        query: {
-          mvid: id,
-        },
-      });
-    },
+    ContainerMv,
   },
 };
 </script>

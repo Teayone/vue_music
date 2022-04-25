@@ -20,8 +20,7 @@ export default {
   z-index: 100;
   height: 80px;
   width: 100%;
-  // background: #f5f5f5;
-  background: url("../../assets/img/bg1.jpg");
-  background-size: 100% 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.63);
 }
 </style>

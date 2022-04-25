@@ -151,7 +151,7 @@ export default {
         },
         (err) => {
           // 只要接收到错误就显示登录框
-          this.$root.$children[0].$children[0].ShowloginBox();
+          this.$login.show();
         }
       );
     },

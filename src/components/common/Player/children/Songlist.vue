@@ -108,7 +108,7 @@ export default {
           this.$parent.updateSongDetail();
         }
       }
-      // 最终都会更新播放列表正在和演唱的歌曲样式
+      // 最终都会更新播放列表正在演唱的歌曲样式
       this.updateSongDetail();
     },
     // 将当前正在播放的歌曲显示在正中央(移动滚动条)
@@ -207,6 +207,7 @@ export default {
     overflow: auto;
     position: relative;
     z-index: 3;
+
     li {
       position: relative;
       display: flex;

@@ -566,7 +566,7 @@ export default {
       justify-content: space-between;
       margin-bottom: 20px;
       p {
-        border: 1px solid #25b3c9;
+        border: 1px solid #ccc;
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -579,7 +579,7 @@ export default {
           font-weight: 900;
         }
         &:hover {
-          background: #25b3c9;
+          background: #f1f1f1;
         }
       }
       div {
@@ -633,8 +633,9 @@ export default {
         left: 0;
         top: 50%;
         transform: translateY(-50%);
-        background: #25b3c9;
+        background: #e5e5e5;
         border-radius: 10px;
+
         transition: all 0.3s;
         cursor: pointer;
         .hc-progress {
@@ -643,14 +644,14 @@ export default {
           top: 0;
           height: 100%;
           border-radius: 10px;
-          background: rgba(140, 90, 150, 0.3);
+          background: #cdcdcd;
         }
         .cur-progress {
           position: absolute;
           left: 0;
           top: 0;
           height: 100%;
-          background: #938cff;
+          background: #ff4e4e;
 
           border-radius: 10px;
           span {
@@ -660,7 +661,7 @@ export default {
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background: #938cff;
+            background: #ec4141;
             opacity: 0;
             transition: opacity 0.3s;
           }

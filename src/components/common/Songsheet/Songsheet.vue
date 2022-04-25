@@ -34,8 +34,8 @@ export default {
   },
   methods: {
     async getData() {
-      let cookie = localStorage.getItem("userInfo");
-      if (cookie) {
+      const loginState = this.$store.state.login.loginState;
+      if (loginState) {
         let { data: ures } = await getLoginPlayList();
         this.list = ures.recommend.slice(0, 10);
       } else {
@@ -52,8 +52,12 @@ export default {
       });
     },
   },
+  watch: {
+    "$store.state.login.loginState"(newVal) {
+      this.getData();
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,9 +1,8 @@
 @font-face {
-  font-family: "iconfont";
-  /* Project id 2888079 */
-  src: url('//at.alicdn.com/t/font_2888079_3zsrd7bz7s5.woff2?t=1641609157244') format('woff2'),
-    url('//at.alicdn.com/t/font_2888079_3zsrd7bz7s5.woff?t=1641609157244') format('woff'),
-    url('//at.alicdn.com/t/font_2888079_3zsrd7bz7s5.ttf?t=1641609157244') format('truetype');
+  font-family: "iconfont"; /* Project id 2888079 */
+  src: url('//at.alicdn.com/t/font_2888079_jwlcmjjvb2.woff2?t=1650783200968') format('woff2'),
+       url('//at.alicdn.com/t/font_2888079_jwlcmjjvb2.woff?t=1650783200968') format('woff'),
+       url('//at.alicdn.com/t/font_2888079_jwlcmjjvb2.ttf?t=1650783200968') format('truetype');
 }
 
 .iconfont {
@@ -12,6 +11,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-phone:before {
+  content: "\e63b";
+}
+
+.icon-password:before {
+  content: "\e65f";
+}
+
+.icon-duihao:before {
+  content: "\e62f";
+}
+
+.icon-yinfu:before {
+  content: "\e6d3";
+}
+
+.icon-weixin:before {
+  content: "\e637";
+}
+
+.icon-QQ:before {
+  content: "\e668";
 }
 
 .icon-chacha:before {

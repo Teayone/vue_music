@@ -1,12 +1,22 @@
 <template>
-  <div id="artist">我是歌手页</div>
+  <div id="artist">
+    <PageArtist />
+  </div>
 </template>
 
 <script>
+import PageArtist from "./cpns/PageArtist.vue";
 export default {
   name: "Artist",
+  components: { PageArtist },
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+#artist {
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+}
 </style>
