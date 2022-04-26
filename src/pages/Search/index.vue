@@ -145,6 +145,13 @@ export default {
       }
     },
   },
+  watch: {
+    "$route.query": {
+      handler(newVal) {
+        this.getSearchData(newVal.keyword, 1);
+      },
+    },
+  },
 };
 </script>
 

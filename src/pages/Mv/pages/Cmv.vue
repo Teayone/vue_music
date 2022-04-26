@@ -47,7 +47,7 @@
     </div>
 
     <!-- MV排行榜 -->
-    <div class="lay-mt">
+    <div class="lay-mt top">
       <Tags TagsTitle="MV排行榜" @areaClick="mvTopClick" :showTags="true" />
       <List>
         <TopMv
@@ -128,6 +128,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+#c-mv {
+  width: 100%;
+  overflow-x: hidden;
+}
 .lay-mt {
   margin-bottom: 40px;
 }

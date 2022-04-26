@@ -14,9 +14,6 @@ export default {
 
 <style lang="less">
 #artist {
-  padding: 20px;
-  overflow-y: auto;
-  overflow-x: hidden;
   height: 100%;
 }
 </style>

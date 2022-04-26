@@ -1,7 +1,16 @@
 <template>
   <div class="artist-tags" :style="{ width }">
     <p>{{ label }}：</p>
-    <Tags :list="list" @itemClick="itemClick" />
+    <Tags
+      :list="list"
+      :exp="exp"
+      @itemClick="itemClick"
+      :route="true"
+      :type="type"
+      :area="area"
+      :initial="initial"
+      :label="label"
+    />
   </div>
 </template>
 
@@ -23,10 +32,26 @@ export default {
       type: String,
       default: "500px",
     },
+    exp: {
+      type: String,
+      default: "name",
+    },
+    type: {
+      type: [Number, String],
+      default: -1,
+    },
+    area: {
+      type: [Number, String],
+      default: -1,
+    },
+    initial: {
+      type: [Number, String],
+      default: -1,
+    },
   },
   methods: {
     itemClick(item) {
-      this.$emit("itemClick", item);
+      this.$emit("itemClick", item, this.label);
     },
   },
 };

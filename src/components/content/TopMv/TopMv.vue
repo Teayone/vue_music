@@ -63,7 +63,7 @@ export default {
 <style lang="less" scoped>
 .top-mv {
   display: flex;
-  width: 50%;
+  width: 720px;
   height: 260px;
   border-bottom: 1px solid #f2f2f2;
   box-sizing: border-box;
@@ -116,7 +116,6 @@ export default {
   }
   .mv-info {
     width: 30%;
-
     padding-top: 60px;
     padding-left: 10px;
     h5 {
@@ -131,6 +130,9 @@ export default {
       padding-top: 95px;
       font-size: 14px;
       color: #999;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       span {
         cursor: pointer;
       }

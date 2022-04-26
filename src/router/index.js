@@ -36,13 +36,31 @@ const routes = [
   },
   {
     path: "/mv",
-    component: () =>
-      import(/* webpackChunkName: "artist" */ "../pages/Mv/Mv.vue"),
+    component: () => import(/* webpackChunkName: "mv" */ "../pages/Mv/Mv.vue"),
   },
   {
     path: "/newsongs",
+    redirect: "/newsongs/song",
     component: () =>
-      import(/* webpackChunkName: "artist" */ "../pages/Newsong/Newsong.vue"),
+      import(/* webpackChunkName: "newsongs" */ "../pages/Newsong/Newsong.vue"),
+    children: [
+      {
+        path: "song",
+        name: "newsong",
+        component: () =>
+          import(
+            /* webpackChunkName: "newsongs" */ "../pages/Newsong/pages/PageSong.vue"
+          ),
+      },
+      {
+        path: "album",
+        name: "newalbum",
+        component: () =>
+          import(
+            /* webpackChunkName: "newalbum" */ "../pages/Newsong/pages/PageAlbum.vue"
+          ),
+      },
+    ],
   },
   {
     path: "/playlist-detail",

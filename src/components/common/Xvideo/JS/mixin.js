@@ -1,10 +1,10 @@
-import { fullScreen, exitScreen, isFullScreen } from './fullScreen'
+import { fullScreen, exitScreen, isFullScreen } from "./fullScreen";
 export const videoData = {
   props: {
     // 视频封面
-    cover:{
-      type:String,
-      default:''
+    cover: {
+      type: String,
+      default: "",
     },
     // 视频路径
     videoSrc: {
@@ -56,26 +56,26 @@ export const videoData = {
       },
     },
     // 是否显示暂停后的画面
-    pauseView:{
-      type:Boolean,
-      default:true
+    pauseView: {
+      type: Boolean,
+      default: true,
     },
     // 视频结束是否显示重新播放
-    resetView:{
-      type:Boolean,
-      default:true
-    }
+    resetView: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
       isShow: false, // 默认在鼠标没有移入视频框时 显示的是底部的进度条
       videoBox: null, // DOM元素
       videoBar: null, // DOM元素
-      tipsTime:null, // DOM元素
-      videoCurBarWidth:0, // 进度条宽度
-      DragPointleft:-7, // 小圆点的left
-      tipsTimeLeft:0, // 时间提示框的left
-      loadingBarWidth:0,// 缓存进度条宽度
+      tipsTime: null, // DOM元素
+      videoCurBarWidth: 0, // 进度条宽度
+      DragPointleft: -7, // 小圆点的left
+      tipsTimeLeft: 0, // 时间提示框的left
+      loadingBarWidth: 0, // 缓存进度条宽度
       flag: false, // 鼠标是否进入到了工具栏
       videoIcon: "iconfont icon-bofangqi-bofang",
       videoState: false, // 视频播放状态
@@ -85,13 +85,13 @@ export const videoData = {
       isUpdate: true, // 是否开启 timeupdate 事件
       showPauseBg: true, // 是否显示暂停时显示在视频框中间的内容
       videoEnd: false, // 是否显示视频结束后的内容,
-      showLoading:false // 加载动画
+      showLoading: false, // 加载动画
     };
   },
   mounted() {
-      this.videoBox = this.$refs.videoBox
-      this.videoBar = this.$refs.videoBar
-      this.tipsTime = this.$refs.tipsTime
+    this.videoBox = this.$refs.videoBox;
+    this.videoBar = this.$refs.videoBar;
+    this.tipsTime = this.$refs.tipsTime;
   },
   methods: {
     // 播放或暂停视频
@@ -118,7 +118,7 @@ export const videoData = {
       this.videoIcon = "iconfont icon-bofangqi-bofang";
       this.videoState = false;
       this.showPauseBg = true;
-      this.showLoading = false
+      this.showLoading = false;
     },
     // 视频能够播放时触发
     canplay() {
@@ -144,16 +144,16 @@ export const videoData = {
     // 更新进度条的函数
     updateCurBar(curTime) {
       let i = curTime / this.dt;
-      this.videoCurBarWidth = i*100+'%'
-      this.DragPointleft = i*this.videoBar.offsetWidth-7+'px'
+      this.videoCurBarWidth = i * 100 + "%";
+      this.DragPointleft = i * this.videoBar.offsetWidth - 7 + "px";
     },
     // 需要加载而缓冲时触发
-    waiting(){
-      this.showLoading = true
+    waiting() {
+      this.showLoading = true;
     },
     // 缓冲或暂停 继续播放时触发
-    playing(){
-      this.showLoading = false
+    playing() {
+      this.showLoading = false;
     },
     // 拖拽视频进度条
     videoMouseD(e) {
@@ -163,7 +163,7 @@ export const videoData = {
       let Cx = e.clientX;
       let SpanLeft = Oleft - Cx; // 得到减去小圆点移动距离后鼠标的位置
       let lt;
-      
+
       document.onmousemove = function (event) {
         _this.isUpdate = false; // 鼠标移动时 timeupdate事件失效
         lt = event.clientX - -SpanLeft; // 鼠标移动后的位置 - 得到减去小圆点移动距离后鼠标的位置 得到元素应该移动的距离
@@ -181,60 +181,64 @@ export const videoData = {
         window.getSelection
           ? window.getSelection().removeAllRanges()
           : document.selection.empty();
-      
       };
       document.onmouseup = function () {
-            _this.isUpdate = true; // timeupdate事件生效
-            _this.$refs.video.currentTime =_this.curTime
-            document.onmousemove = null;
-            document.onmouseup = null;
-          
+        _this.isUpdate = true; // timeupdate事件生效
+        _this.$refs.video.currentTime = _this.curTime;
+        document.onmousemove = null;
+        document.onmouseup = null;
       };
     },
     // 显示进度条上方对应提示时间
     showTimeTips(e) {
-      let n = e.clientX - this.videoBar.offsetLeft - this.videoBox.offsetLeft-7,
-      k= e.clientX - this.videoBar.offsetLeft - this.videoBox.offsetLeft-7
-      if(n<=0){
-        n=0
+      let n =
+          e.clientX - this.videoBar.offsetLeft - this.videoBox.offsetLeft - 7,
+        k = e.clientX - this.videoBar.offsetLeft - this.videoBox.offsetLeft - 7;
+      if (n <= 0) {
+        n = 0;
       }
       // 设置时间提示框的时间
-      this.tipsCurTime = n / this.videoBar.offsetWidth * this.dt
+      this.tipsCurTime = (n / this.videoBar.offsetWidth) * this.dt;
 
-      if(k<=this.tipsTime.offsetWidth/2){
-        k=this.tipsTime.offsetWidth/2
-      }else if(k>=this.videoBar.offsetWidth-this.tipsTime.offsetWidth/2){
-        k=this.videoBar.offsetWidth-this.tipsTime.offsetWidth/2
+      if (k <= this.tipsTime.offsetWidth / 2) {
+        k = this.tipsTime.offsetWidth / 2;
+      } else if (
+        k >=
+        this.videoBar.offsetWidth - this.tipsTime.offsetWidth / 2
+      ) {
+        k = this.videoBar.offsetWidth - this.tipsTime.offsetWidth / 2;
       }
       // 设置时间提示框的left
-      this.tipsTimeLeft = k-this.tipsTime.offsetWidth/2+'px'
-      
+      this.tipsTimeLeft = k - this.tipsTime.offsetWidth / 2 + "px";
     },
     // 跳转进度
     jumpTime(e) {
-      if(e.target.className==='video-yuan'){return}else{
-        this.DragPointleft = e.offsetX - 7+'px'
-        this.videoCurBarWidth = (e.offsetX / this.videoBar.offsetWidth )* 100 +'%'
-        this.$refs.video.currentTime = (e.offsetX / this.videoBar.offsetWidth )* this.dt
-      } 
+      if (e.target.className === "video-yuan") {
+        return;
+      } else {
+        this.DragPointleft = e.offsetX - 7 + "px";
+        this.videoCurBarWidth =
+          (e.offsetX / this.videoBar.offsetWidth) * 100 + "%";
+        this.$refs.video.currentTime =
+          (e.offsetX / this.videoBar.offsetWidth) * this.dt;
+      }
     },
     // 缓存进度
-    loadingBar(){
-      let b =this.$refs.video.buffered
-      if(b.length>=1){
-       let n= b.end(b.length-1)
-       this.loadingBarWidth = n / this.dt * 100 +'%'
+    loadingBar() {
+      let b = this.$refs.video.buffered;
+      if (b.length >= 1) {
+        let n = b.end(b.length - 1);
+        this.loadingBarWidth = (n / this.dt) * 100 + "%";
       }
-    
     },
     // 鼠标离开隐藏工具栏
     hideTool() {
-      this.videoBox.style.cursor = 'none'
+      this.videoBox.style.cursor = "none";
       this.isShow = false;
     },
     // 鼠标在视频框移动，持续显示工具栏
     continuedTool() {
-      this.videoBox.style.cursor = 'default'
+      this.videoBox.style.cursor = "default";
       this.isShow = true;
       clearTimeout(this.time);
       // 鼠标停止五秒隐藏工具条
@@ -244,7 +248,7 @@ export const videoData = {
       }, 3000);
     },
     // 清晰度子组件的点击事件切换清晰度
-    switchDefinition(definition) {  
+    switchDefinition(definition) {
       this.$emit("switchDefinition", definition);
     },
     // 切换倍速
@@ -252,27 +256,31 @@ export const videoData = {
       this.$refs.video.playbackRate = parseFloat(speed);
     },
     // 音量组件点击事件
-    volumeClick(value){
-      this.$refs.video.volume = value
+    volumeClick(value) {
+      this.$refs.video.volume = value;
     },
     // 音量组件拖拽进度事件
-    volumeMouseMove(value){
-      this.$refs.video.volume = value
+    volumeMouseMove(value) {
+      this.$refs.video.volume = value;
     },
     // 全屏
-    quanping(){
-      let _this = this
+    quanping() {
+      let _this = this;
       if (!isFullScreen()) {
-        fullScreen( this.videoBox);
-        document.onkeydown = function(e){
-          if(e.code==='Space'){
-            _this.playVideo()
+        fullScreen(this.videoBox);
+        document.onkeydown = function (e) {
+          if (e.code === "Space") {
+            _this.playVideo();
           }
-        }
+        };
       } else {
-        document.onkeydown = null
+        document.onkeydown = null;
         exitScreen();
       }
     },
   },
-}
+  beforeDestroy() {
+    this.timeupdate = function () {};
+    this.$refs.video.pause();
+  },
+};

@@ -100,12 +100,14 @@ export default {
       total: 0, // 评论条数
       showLoading: false, // 加载动画
       showComment: false, // 有评论就显示评论，没有就显示暂无评论
+      isShow: true,
     };
   },
-  created() {
+  mounted() {
     let id = this.$route.query.id;
     this.getData(id);
   },
+
   mixins: [playlistPlay],
   methods: {
     toggleTabs(i) {
@@ -158,6 +160,14 @@ export default {
       } else {
         this.getCommentData(id, newPage);
       }
+    },
+  },
+  watch: {
+    $route: {
+      handler(newVal) {
+        let id = newVal.query.id;
+        this.getData(id);
+      },
     },
   },
 };

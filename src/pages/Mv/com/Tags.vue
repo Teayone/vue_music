@@ -4,7 +4,13 @@
       >{{ TagsTitle }}<i class="iconfont icon-qianjin"></i
     ></span>
     <div class="right">
-      <XTags :list="area" @itemClick="areaClick" v-if="showTags" />
+      <XTags
+        :list="area"
+        @itemClick="areaClick"
+        v-if="showTags"
+        center
+        :height="35"
+      />
     </div>
   </div>
 </template>
@@ -42,7 +48,6 @@ export default {
   position: relative;
   display: flex;
   padding: 10px 0;
-  // align-items: center;
   margin-top: 10px;
   .fs {
     font-size: 20px;
@@ -57,7 +62,7 @@ export default {
   }
   .right {
     position: absolute;
-    bottom: 15px;
+    bottom: 10px;
     right: 0;
     white-space: nowrap;
   }

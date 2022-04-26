@@ -5,10 +5,7 @@
       :key="item.id"
       :class="{ active: item.id === songDetail.id }"
     >
-      <div class="cover-box" @click="bofang(item.id)">
-        <span><i class="iconfont icon-bofangqi-bofang"></i></span>
-        <img v-lazy="item.album.picUrl" :key="item.album.picUrl" />
-      </div>
+      <Cover :item="item" @coverClick="bofang" />
       <div class="song-info">
         <h5>
           {{ item.name }}
@@ -30,8 +27,10 @@
 <script>
 import { getNewSong } from "@/network/api";
 import { songPlay, updateSongDetail } from "@/mixin/mixin";
+import Cover from "@/components/common/Cover";
 export default {
   name: "NewSong",
+  components: { Cover },
   data() {
     return {
       newSongs: [],
@@ -64,36 +63,6 @@ export default {
     }
     &:hover {
       background: #eaeaea;
-    }
-    .cover-box {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      cursor: pointer;
-      span {
-        position: absolute;
-        width: 40px;
-        height: 40px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        line-height: 42px;
-        border-radius: 50%;
-        background: #fff;
-        z-index: 2;
-        i {
-          margin-left: 2px;
-          font-size: 25px;
-          color: #ff7a9e;
-        }
-      }
-      img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 6px;
-      }
     }
     .song-info {
       position: relative;

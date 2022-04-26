@@ -29,6 +29,7 @@ export default {
     NewSong,
     ContainerMv,
   },
+  mounted() {},
 };
 </script>
 
