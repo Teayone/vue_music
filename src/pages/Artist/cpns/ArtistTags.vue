@@ -63,5 +63,6 @@ export default {
   white-space: nowrap;
   padding: 10px 30px;
   display: flex;
+  align-items: center;
 }
 </style>

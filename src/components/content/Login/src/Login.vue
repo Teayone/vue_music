@@ -7,7 +7,7 @@
     </div>
     <span class="nic-name">{{ profile ? profile.nickname : "未登录" }}</span>
     <!-- 登陆成功后的窗体 -->
-    <UserContainer v-if="showBox" @loginOut="loginOut" />
+    <UserContainer v-if="showBox" @itemClick="itemClick" />
   </div>
 </template>
 
@@ -48,12 +48,17 @@ export default {
       }
     },
     // 退出登录
-    loginOut() {
-      this.$store.dispatch("login/handleToOutLogin");
-      if (this.$route.path !== "/home") {
-        this.$router.replace({
-          path: "/home",
-        });
+    itemClick(type) {
+      this.showBox = false;
+      switch (type) {
+        case "out":
+          this.$store.dispatch("login/handleToOutLogin");
+          if (this.$route.path !== "/home") {
+            this.$router.replace({
+              path: "/home",
+            });
+          }
+          break;
       }
     },
   },

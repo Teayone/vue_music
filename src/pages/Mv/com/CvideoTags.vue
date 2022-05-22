@@ -112,6 +112,9 @@ export default {
       border-radius: 10px;
       box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.1);
       padding: 20px;
+      &::-webkit-scrollbar {
+        width: 0 !important;
+      }
       h2 {
         border-bottom: 1px solid #ccc;
         padding-bottom: 10px;

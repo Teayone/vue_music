@@ -1,5 +1,5 @@
 <template>
-  <ul :style="{ height: height + 'px' }">
+  <ul>
     <li v-for="(item, index) in list" :key="index" :class="{ center: center }">
       <span
         :class="{
@@ -62,10 +62,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    height: {
-      type: Number,
-      default: 30,
-    },
   },
   data() {
     return {
@@ -109,7 +105,10 @@ ul {
   white-space: nowrap;
   align-items: center;
   li {
-    height: 100%;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    // padding: 0 0 8px 0;
     &.center {
       display: flex;
       align-items: center;

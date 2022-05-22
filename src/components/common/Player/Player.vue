@@ -133,8 +133,8 @@ export default {
       CurProgress: null, // 歌曲进度DOM元素
       span: null, // 小圆点DOM元素
       volumeBar: null, // 音量条DOM元素
-      Bar: null, // 当前音量进度 DOM元素
-      volumeYuan: null, //音量调拖拽点DOM元素
+      Bar: null, // 当前音量大小 DOM元素
+      volumeYuan: null, //音量拖拽点DOM元素
       url: "", // 歌曲url
       btnIcon: "iconfont icon-bofang1", // 播放按钮
       flag: false, // 歌曲是否正在播放，默认没有播放

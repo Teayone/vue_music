@@ -62,7 +62,7 @@ export default {
       let type = formatType(item.name);
       formatLabel(this, label, type);
       this.offset = 1;
-      this.$router.push({
+      this.$router.replace({
         path: "/artist",
         query: {
           type: this.type,

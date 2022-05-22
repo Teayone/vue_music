@@ -10,13 +10,7 @@ export default {
   name: "UserContainer",
   methods: {
     itemClick(type) {
-      switch (type) {
-        case "out":
-          this.$emit("loginOut");
-          break;
-        default:
-          break;
-      }
+      this.$emit("itemClick", type);
     },
   },
 };

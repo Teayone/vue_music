@@ -1,8 +1,11 @@
 export default function (Vue) {
   Vue.filter("formatPlayCount", function (value) {
-    if (value >= 10000 && value <= 10000000000000) {
+    if (value >= 10000 && value <= 100000000) {
       value = value / 10000;
       return value.toFixed(1) + "万";
+    } else if (value > 100000000) {
+      value = value / 100000000;
+      return value.toFixed(0) + "亿";
     } else {
       return value;
     }

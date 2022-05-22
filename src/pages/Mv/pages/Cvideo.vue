@@ -136,7 +136,6 @@ export default {
       });
     },
     scrollData(i) {
-      console.log(i);
       let sh = i.scrollHeight;
       // 滚动到底部时触发
       if (i.scrollTop + i.offsetHeight == sh) {
