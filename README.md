@@ -23,10 +23,5 @@
     2.2. cnpm install
 
     2.3. npm run serve
-### 项目效果预览
-| ![首页](src/assets/img/Snipaste_2021-12-19_20-49-27.png)  | ![歌单](src/assets/img/Snipaste_2021-12-19_20-49-43.png)  |  ![排行榜](src/assets/img/Snipaste_2021-12-19_20-49-57.png) |  ![首页](src/assets/img/Snipaste_2021-12-19_20-50-16.png) |
-|---|---|---|---|
-|  ![MV](src/assets/img/Snipaste_2021-12-19_20-50-27.png) |  ![MV排行榜](src/assets/img/Snipaste_2021-12-19_20-50-35.png) |  ![视频](src/assets/img/Snipaste_2021-12-19_20-50-53.png) |   ![歌曲详情](src/assets/img/Snipaste_2021-12-19_20-52-15.png)|
-|  ![歌单详情](src/assets/img/Snipaste_2021-12-19_20-52-38.png) |  ![播放列表](src/assets/img/Snipaste_2021-12-19_20-51-18.png) |  ![搜索建议](src/assets/img/Snipaste_2021-12-19_20-53-19.png) |  ![视频播放](src/assets/img/Snipaste_2021-12-19_21-05-04.png) |
 
 
