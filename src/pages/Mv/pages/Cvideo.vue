@@ -138,7 +138,7 @@ export default {
     scrollData(i) {
       let sh = i.scrollHeight;
       // 滚动到底部时触发
-      if (i.scrollTop + i.offsetHeight == sh) {
+      if (i.scrollTop + i.offsetHeight <= sh + 1) {
         this.index += 1; //翻页
         this.isShow = true; // 滚动到底部显示加载中
         if (this.group === "全部视频") {
@@ -167,6 +167,13 @@ export default {
           time = null;
         }, delay);
       };
+    },
+    async delay() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, 1500);
+      });
     },
   },
 };

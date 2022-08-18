@@ -76,6 +76,12 @@ export default {
     width: 23%;
   }
 }
+@media screen and (min-width: 1920px) {
+  .personalized-mb {
+    margin: 15px 0;
+    width: 23%;
+  }
+}
 .personalized-mb {
   .mv-cover-img {
     position: relative;

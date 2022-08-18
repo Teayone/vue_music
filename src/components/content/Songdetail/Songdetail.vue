@@ -133,12 +133,6 @@ export default {
     this.getMusicCom();
     this.getSimiList();
     this.$store.commit("SETSONGDETAIL", true);
-    // 根据播放状态而决定是否开启滚动歌词
-    if (this.$store.state.flag) {
-      setTimeout(() => {
-        this.scrollLyric();
-      }, 500);
-    }
   },
   mounted() {
     // 切换歌曲时重新刷新数据
@@ -195,10 +189,14 @@ export default {
             });
           }
         });
-
         this.lyricData = mergeLyric;
       } else {
         this.lyricData = result;
+      }
+      // 根据播放状态而决定是否开启滚动歌词
+      if (this.$store.state.flag) {
+        console.log("执行");
+        this.scrollLyric();
       }
     },
     // 获取评论
@@ -247,14 +245,12 @@ export default {
     },
     // 滚动歌词
     scrollLyric() {
-      if (this.lyricData.length <= 3) {
-        return;
-      }
       let _this = this;
-      clearInterval(_this.timer);
+      this.timer && clearInterval(_this.timer);
       let len = _this.lyricData.length;
       try {
         _this.timer = setInterval(() => {
+          console.log(213);
           for (let i = 0; i < len; i++) {
             if (
               _this.$store.state.CurTime >= _this.lyricData[i].time &&
@@ -262,6 +258,9 @@ export default {
                 _this.$store.state.CurTime < _this.lyricData[i + 1].time)
             ) {
               _this.lyricIndex = i;
+              if (!_this.lyricData[i + 1]) {
+                clearInterval(this.timer);
+              }
             }
           }
         }, 300);

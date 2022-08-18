@@ -1,5 +1,6 @@
 <template>
-  <div id="playlist-item" :style="{ width: itemWidth + 'px' }">
+  <div id="playlist-item">
+    <!-- :style="{ width: itemWidth + 'px' }" -->
     <!-- item歌单 -->
     <div class="img-box" @click.stop="toPlaylistDetail">
       <div class="playcount-icon">
@@ -52,9 +53,17 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@media screen and (max-width: 1699px) {
+  #playlist-item {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    min-width: 250px;
+  }
+}
 #playlist-item {
   margin-top: 20px;
   margin-bottom: 10px;
+  width: 17%;
   .img-box {
     position: relative;
     width: 100%;

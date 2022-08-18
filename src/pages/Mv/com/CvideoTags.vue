@@ -1,13 +1,13 @@
 <template>
   <div id="cvideo-tags">
     <div class="tips-title">
-      <span class="all-video" @click="isShow = !isShow"
+      <span class="all-video" @click.stop="isShow = !isShow"
         >{{ lable }} <i class="iconfont icon-qianjin"></i>
       </span>
       <!-- 弹框 -->
-      <div class="tips" v-show="isShow">
+      <div class="tips" v-show="isShow" ref="tips">
         <h2>
-          <span @click="allClick" :class="{ active: lable === '全部视频' }"
+          <span @click.stop="allClick" :class="{ active: lable === '全部视频' }"
             >全部视频</span
           >
         </h2>
@@ -50,6 +50,13 @@ export default {
   },
   created() {
     this.getVideoData();
+  },
+  mounted() {
+    document.body.addEventListener("click", (event) => {
+      if (this.isShow && !event.target.contains(this.$refs.tips)) {
+        this.isShow = false;
+      }
+    });
   },
   methods: {
     async getVideoData() {

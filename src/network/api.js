@@ -567,7 +567,8 @@ export function getArtistList(type, area, initial, offset) {
       type,
       area,
       initial,
-      offset: (offset - 1) * 30,
+      offset: (offset - 1) * 20,
+      limit: 20,
     },
   });
 }

@@ -64,6 +64,7 @@ export default {
     search(searchWord) {
       this.closeSearchTips();
       this.$refs.input.blur();
+      this.timer && clearTimeout(this.timer);
       // 如果当前输入框有值，则采用 enter 跳转到搜索页
       if (this.searchMsg) {
         this.$router.push({

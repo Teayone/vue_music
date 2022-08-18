@@ -8,7 +8,7 @@
       <h5 class="v-name">
         {{ videoName }}
         <i
-          v-if="info !== null"
+          v-if="isShow"
           @click="isShow = !isShow"
           :class="
             isShow === false
@@ -77,6 +77,14 @@ export default {
     return {
       isShow: false,
     };
+  },
+  computed: {
+    isShow() {
+      if (this.info === null || this.info === "" || this.info === undefined) {
+        return false;
+      }
+      return true;
+    },
   },
 };
 </script>

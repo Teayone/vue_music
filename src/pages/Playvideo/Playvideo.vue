@@ -96,6 +96,7 @@ export default {
       // 视频详情
       let { data: vdetail } = await getVideoDetail(id);
       this.videoData = vdetail.data;
+      console.log(this.videoData);
       // 修改下清晰度数组
       this.resolutions = vdetail.data.resolutions
         .sort((a, b) => {

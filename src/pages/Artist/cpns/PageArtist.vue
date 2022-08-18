@@ -12,7 +12,11 @@
       :area="$route.query.area"
       :initial="$route.query.initial"
     />
-    <ArtistContent :artists="artistList" @scrollEvent="handleScroll" />
+    <ArtistContent
+      :artists="artistList"
+      @scrollEvent="handleScroll"
+      v-if="artistList.length > 0"
+    />
     <LoadingMove v-if="showLoading" />
   </div>
 </template>
@@ -40,6 +44,7 @@ export default {
     };
   },
   created() {
+    this.showLoading = true;
     if (this.$route.query && this.$route.query.hasOwnProperty("type")) {
       const { type, area, initial } = this.$route.query;
       this.getArtistListData(type, area, initial, 1);
@@ -49,6 +54,7 @@ export default {
   },
   methods: {
     async getArtistListData(type, area, initial, offset) {
+      await this.delay();
       const res = await getArtistList(type, area, initial, offset);
       this.showLoading = false;
       if (!res.data.artists.length) return;
@@ -70,6 +76,8 @@ export default {
           initial: this.initial,
         },
       });
+      this.artistList = [];
+      this.showLoading = true;
       this.getArtistListData(this.type, this.area, this.initial, this.offset);
     },
     // 节流
@@ -77,6 +85,13 @@ export default {
       this.showLoading = true;
       this.offset = this.offset + 1;
       this.getArtistListData(this.type, this.area, this.initial, this.offset);
+    },
+    async delay() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, 1500);
+      });
     },
   },
 };

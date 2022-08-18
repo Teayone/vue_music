@@ -1,11 +1,6 @@
 <template>
   <div class="artist-content" @scroll="handleScroll">
-    <div
-      class="artist-singer"
-      :key="item.id"
-      v-for="item in artists"
-      ::key="item.id"
-    >
+    <div class="artist-singer" :key="item.id" v-for="item in artists">
       <div class="artist-avatar">
         <img v-lazy="item.picUrl" :key="item.picUrl" />
       </div>
@@ -38,7 +33,10 @@ export default {
         let sh = e.target.scrollHeight;
         let st = e.target.scrollTop;
         let oh = e.target.offsetHeight;
-        if (sh - st === oh) {
+        console.log(sh - st);
+        console.log(oh);
+        if (sh - st <= oh + 1) {
+          console.log(123);
           this.$emit("scrollEvent");
         }
         this.timer = null;
@@ -58,15 +56,16 @@ export default {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  &::-webkit-scrollbar {
-    width: 0 !important;
-  }
+  // &::-webkit-scrollbar {
+  //   width: 0 !important;
+  // }
+
   .artist-singer {
-    width: 260px;
+    width: 22%;
     padding: 10px 0;
     .artist-avatar {
       width: 100%;
-      height: 230px;
+      height: 260px;
       padding: 15px 0;
       img {
         width: 100%;

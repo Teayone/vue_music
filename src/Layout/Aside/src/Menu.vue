@@ -1,13 +1,14 @@
 <template>
   <ul>
-    <li
+    <router-link
+      tag="li"
       v-for="(item, index) in list"
       :key="index"
-      :class="{ active: item.link === activeClass }"
-      @click="toListItem(item.link)"
+      active-class="active"
+      :to="item.link"
     >
       {{ item.name }}
-    </li>
+    </router-link>
   </ul>
 </template>
 
@@ -25,18 +26,6 @@ export default {
         { link: "/newsongs", name: "最新音乐" },
       ],
     };
-  },
-  methods: {
-    toListItem(path) {
-      this.$router.push({
-        path,
-      });
-    },
-  },
-  computed: {
-    activeClass() {
-      return this.$route.path;
-    },
   },
 };
 </script>
