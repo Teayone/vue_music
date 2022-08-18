@@ -3,6 +3,7 @@
     <Header />
     <Main />
     <Footer />
+    <Alert />
   </div>
 </template>
 
@@ -10,9 +11,10 @@
 import Header from "./Layout/Header/Header.vue";
 import Main from "./Layout/Main";
 import Footer from "./Layout/Footer/Footer.vue";
+import Alert from "./components/common/Alert/Alert.vue";
 export default {
   name: "App",
-  components: { Header, Main, Footer },
+  components: { Header, Main, Footer, Alert },
 };
 </script>
 

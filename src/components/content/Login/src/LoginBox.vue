@@ -9,10 +9,30 @@
       </div>
       <div class="content-body">
         <div class="login-input">
-          <x-input type="tel" icon="icon-phone" v-model="phone"></x-input>
+          <x-input
+            placeholder="请输入手机号"
+            type="tel"
+            icon="icon-phone"
+            v-model="phone"
+            :rules="rules"
+            ref="xInput"
+          ></x-input>
         </div>
-        <div class="login-input" style="margin-top: -1px">
-          <x-input type="password" v-model="password"></x-input>
+        <div
+          class="login-input input-box"
+          :class="{ 'code-err': codeErr }"
+          style="margin-top: -1px"
+        >
+          <i class="iconfont icon-password icon-pos"></i>
+          <input
+            type="text"
+            placeholder="请输入验证码"
+            v-model.trim="captcha"
+          />
+          <button @click="handleCodeBtnClick" :disabled="disabled">
+            {{ codeMessage }}
+          </button>
+          <span class="code-err" v-if="codeErr">验证码输入错误</span>
         </div>
       </div>
       <div class="content-bottom">
@@ -24,28 +44,73 @@
 
 <script>
 import XInput from "@/components/common/Input";
+import { getCode, validateCode } from "@/network/login";
 export default {
   name: "LoginBox",
   components: { XInput },
   data() {
     return {
       phone: "",
-      password: "",
+      codeMessage: "发送验证码",
+      rules: [
+        {
+          required: true,
+          message: "手机号不能为空",
+        },
+        {
+          pattern:
+            /^((1[3,5,8,7,9][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/,
+          message: "请输入合法的手机号",
+        },
+      ],
+      timer: null,
+      disabled: false,
+      codeErr: false,
+      captcha: "",
     };
   },
   methods: {
     close() {
       this.$login.hide();
     },
-    login() {
+    async login() {
+      this.codeErr = false;
+      const res = this.$refs.xInput.validate();
+      if (!res) return;
+      // 校验验证码
+
       const phone = this.phone.trim();
-      const password = this.password.trim();
-      if (phone && password) {
+      const validateCaptcha = await validateCode({
+        phone,
+        captcha: this.captcha,
+      });
+      if (!validateCaptcha.data.data) {
+        return (this.codeErr = true);
+      }
+      if (phone && this.captcha) {
         this.$store.dispatch("login/handleToPhoneLogin", {
           phone,
-          password,
+          captcha: this.captcha,
         });
       }
+    },
+    async handleCodeBtnClick() {
+      const res = this.$refs.xInput.validate();
+      if (!res) return;
+      const phone = this.phone.trim();
+      let sec = 60;
+      this.disabled = true;
+      this.codeMessage = sec + "s";
+      this.timer = setInterval(() => {
+        this.codeMessage = --sec + "s";
+        if (sec < 10) this.codeMessage = "0" + sec + "s";
+        if (sec <= 0) {
+          clearInterval(this.timer);
+          this.codeMessage = "发送验证码";
+          this.disabled = false;
+        }
+      }, 1000);
+      await getCode(phone);
     },
   },
 };
@@ -129,6 +194,55 @@ export default {
         cursor: pointer;
       }
     }
+  }
+}
+
+.input-box {
+  position: relative;
+  display: flex;
+  border: 1px solid #333;
+  border-radius: 5px;
+  // overflow: hidden;
+  &:focus-within {
+    border-color: skyblue;
+  }
+  &.code-err {
+    border-color: red;
+  }
+  .icon-pos {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+  }
+  input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding-left: 30px;
+    padding-right: 125px;
+  }
+  button {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    height: 100%;
+    border: none;
+    outline: none;
+    width: 100px;
+    background-color: antiquewhite;
+    border-radius: 5px;
+  }
+  .code-err {
+    position: absolute;
+    bottom: -15px;
+    display: block;
+    font-size: 12px;
+    color: red;
   }
 }
 </style>

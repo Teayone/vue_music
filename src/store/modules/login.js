@@ -1,4 +1,5 @@
 import { phoneLogin, outLogin } from "@/network/login";
+import { show, hide } from "@/UI/alert";
 export default {
   namespaced: true,
   state() {
@@ -17,9 +18,9 @@ export default {
   },
   actions: {
     async handleToPhoneLogin({ commit }, data) {
-      const { phone, password } = data;
-      const res = await phoneLogin(phone, password);
+      const res = await phoneLogin(data);
       if (res.status === 200) {
+        console.log(res);
         localStorage.setItem("userInfo", res.data.cookie);
         localStorage.setItem("loginState", JSON.stringify(true));
         commit("SET_LOGINSTATE", true);
@@ -27,7 +28,10 @@ export default {
         // 关闭登录窗口
         this._vm.$login.hide();
       } else {
-        alert("登陆失败，请重试");
+        show("登陆失败，请重试");
+        setTimeout(() => {
+          hide();
+        }, 1000);
       }
     },
     async handleToOutLogin({ commit }) {

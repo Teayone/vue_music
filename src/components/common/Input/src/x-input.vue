@@ -1,8 +1,8 @@
 <template>
   <div
     class="x-input"
-    :style="{ width, height, borderColor }"
-    :class="iconPosition"
+    :style="{ width, height }"
+    :class="[iconPosition, { 'error-message': isErr }]"
   >
     <div class="icon">
       <i class="iconfont" :class="icon"></i>
@@ -11,7 +11,10 @@
       :type="type"
       :value="value"
       @input="$emit('input', $event.target.value)"
+      @blur="handleBlur"
+      v-bind="$attrs"
     />
+    <span class="err-message" v-show="isErr">{{ message }}</span>
   </div>
 </template>
 
@@ -35,10 +38,6 @@ export default {
       type: String,
       default: "100%",
     },
-    borderColor: {
-      type: String,
-      default: "#ccc",
-    },
     type: {
       type: String,
       default: "text",
@@ -46,6 +45,35 @@ export default {
     icon: {
       type: String,
       default: "icon-password",
+    },
+    rules: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  data() {
+    return {
+      isErr: false,
+      message: "",
+    };
+  },
+  methods: {
+    handleBlur() {
+      return this.rules.every((rule) => {
+        this.message = rule.message;
+        if (rule.required && !this.value.trim()) {
+          return !(this.isErr = true);
+        }
+        if (rule.pattern && !rule.pattern.test(this.value.trim())) {
+          return !(this.isErr = true);
+        }
+        this.isErr = false;
+        this.message = "";
+        return true;
+      });
+    },
+    validate() {
+      return this.handleBlur();
     },
   },
 };
@@ -72,7 +100,7 @@ export default {
     border-radius: 5px;
     overflow: hidden;
     color: #333;
-    font-size: 18px;
+    // font-size: 18px;
   }
   &.left {
     .icon {
@@ -93,5 +121,15 @@ export default {
       padding-right: 30px;
     }
   }
+}
+.x-input.error-message {
+  border-color: red;
+}
+span.err-message {
+  display: block;
+  text-align: left;
+  color: red;
+  font-size: 12px;
+  transform: translateY(6px);
 }
 </style>

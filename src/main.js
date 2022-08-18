@@ -9,9 +9,11 @@ import "./assets/css/reset.css";
 import VueLazyload from "vue-lazyload";
 import format from "./filter/format";
 import login from "./UI/login";
+import alert from "./UI/alert";
 Vue.use(VueLazyload);
 Vue.use(format);
 Vue.use(login);
+Vue.use(alert);
 Vue.config.productionTip = false;
 new Vue({
   router,
