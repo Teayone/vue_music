@@ -16,18 +16,15 @@
 import Swiper from "@/components/content/Swiper/Swiper";
 import Title from "@/components/common/Title/Title";
 import Songsheet from "@/components/common/Songsheet/Songsheet";
-import Release from "@/components/content/Release/Release";
-import NewSong from "@/components/content/NewSong/NewSong";
-import ContainerMv from "@/components/content/ContainerMv";
 export default {
   name: "Home",
   components: {
     Swiper,
     Title,
     Songsheet,
-    Release,
-    NewSong,
-    ContainerMv,
+    Release: () => import("@/components/content/Release/Release"),
+    NewSong: () => import("@/components/content/NewSong/NewSong"),
+    ContainerMv: () => import("@/components/content/ContainerMv"),
   },
   mounted() {},
 };

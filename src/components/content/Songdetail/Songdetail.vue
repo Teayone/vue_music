@@ -195,7 +195,6 @@ export default {
       }
       // 根据播放状态而决定是否开启滚动歌词
       if (this.$store.state.flag) {
-        console.log("执行");
         this.scrollLyric();
       }
     },
@@ -250,7 +249,6 @@ export default {
       let len = _this.lyricData.length;
       try {
         _this.timer = setInterval(() => {
-          console.log(213);
           for (let i = 0; i < len; i++) {
             if (
               _this.$store.state.CurTime >= _this.lyricData[i].time &&
@@ -335,7 +333,7 @@ export default {
         if (this.lyricIndex >= 3) {
           let activeLi = document.querySelector(".lyric ul>li.active");
           this.oMoveLyric.scrollTop =
-            activeLi.offsetTop - this.oMoveLyric.offsetHeight / 2;
+            activeLi.offsetTop - this.oMoveLyric?.offsetHeight / 2;
         }
       },
       immediate: true,
